@@ -8,6 +8,8 @@ manifest:
       url-base: https://github.com/urob
     - name: kevinpastor
       url-base: https://github.com/kevinpastor
+    - name: m165437
+      url-base: https://github.com/M165437
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -19,8 +21,8 @@ manifest:
     - name: zmk-helpers
       remote: urob
       revision: main
-    - name: nice-view-elemental
-      remote: kevinpastor
+    - name: nice-view-gem
+      remote: m165437
       revision: main
   self:
     path: config
