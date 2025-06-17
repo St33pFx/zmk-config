@@ -8,13 +8,6 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/rgb.h>
 
-
-&led_strip {
-
-chain-length = <27>; // 21 backlight + 6 underglow
-
-};
-
 / {
     combos {
         compatible = "zmk,combos";
@@ -29,6 +22,11 @@ chain-length = <27>; // 21 backlight + 6 underglow
             bindings = <&kp ESC>;
             key-positions = <2 3>;
             layers = <0>;
+        };
+
+        backspace {
+            bindings = <&kp BACKSPACE>;
+            key-positions = <27 26>;
         };
     };
 
@@ -81,7 +79,7 @@ chain-length = <27>; // 21 backlight + 6 underglow
             display-name = "Func";
             bindings = <
 &Centrar      &none  &kp LC(X)  &kp LC(C)  &kp LC(V)        &kp C_BRIGHTNESS_INC    &none            &none           &kp UP_ARROW  &none       &none  &none
-&cut          &none  &none      &none      &kp PRINTSCREEN  &kp C_BRI_DEC           &none            &kp LEFT_ARROW  &kp DOWN      &kp RIGHT   &none  &none
+&cut          &none  &kp F13    &kp F14    &kp PRINTSCREEN  &kp C_BRI_DEC           &none            &kp LEFT_ARROW  &kp DOWN      &kp RIGHT   &none  &none
 &kp LEFT_GUI  &none  &kp LC(Z)  &kp LC(Y)  &kp LC(S)        &kp C_VOL_DN            &kp C_VOLUME_UP  &kp K_PREV      &kp K_PP      &kp K_NEXT  &none  &none
                                 &kp LGUI   &trans           &kp SPACE               &kp SPACE        &mo 3           &kp RALT
             >;
@@ -96,20 +94,20 @@ chain-length = <27>; // 21 backlight + 6 underglow
 
             display-name = "Symb";
             bindings = <
-&none  &kp EXCLAMATION  &kp AT  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp PRCNT    &kp EQUAL        &none      &none      &none          &none          &kp BSPC
-&none  &none            &none   &kp LEFT_BRACE        &kp RIGHT_BRACE        &none        &kp EXCLAMATION  &kp HASH   &kp SLASH  &kp BACKSLASH  &kp PIPE       &kp DLLR
-&none  &none            &none   &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &none        &none            &kp GRAVE  &kp CARET  &kp AT         &kp AMPERSAND  &kp TILDE
-                                &kp LGUI              &mo 4                  &kp SPACE    &kp RET          &mo 3      &kp RALT
+&none  &kp EXCLAMATION  &kp AT  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp PRCNT    &kp EQUAL        &kp LESS_THAN  &kp GREATER_THAN  &none          &none          &kp BSPC
+&none  &none            &none   &kp LEFT_BRACE        &kp RIGHT_BRACE        &none        &kp EXCLAMATION  &kp HASH       &kp SLASH         &kp BACKSLASH  &kp PIPE       &kp DLLR
+&none  &none            &none   &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &none        &none            &kp GRAVE      &kp CARET         &kp AT         &kp AMPERSAND  &kp TILDE
+                                &kp LGUI              &mo 4                  &kp SPACE    &kp RET          &mo 3          &kp RALT
             >;
         };
 
         Numbs {
             display-name = "Numbs";
             bindings = <
-&none  &none  &none  &none         &none   &none        &kp KP_PLUS      &kp NUMBER_7  &kp N8    &kp N9        &kp KP_MINUS  &none
-&none  &none  &none  &none         &none   &none        &kp KP_MULTIPLY  &kp NUMBER_4  &kp N5    &kp NUMBER_6  &kp SLASH     &none
-&none  &none  &none  &none         &none   &none        &kp NUMBER_0     &kp N1        &kp N2    &kp N3        &kp N0        &none
-                     &kp LEFT_GUI  &trans  &kp SPACE    &kp SPACE        &trans        &kp RALT
+&none  &kp F1  &kp F2   &kp F3        &kp F4   &none        &kp KP_PLUS      &kp NUMBER_7  &kp N8    &kp N9        &kp KP_MINUS  &none
+&none  &kp F5  &kp F6   &kp F7        &kp F8   &none        &kp KP_MULTIPLY  &kp NUMBER_4  &kp N5    &kp NUMBER_6  &kp SLASH     &none
+&none  &kp F9  &kp F10  &kp F11       &kp F12  &none        &kp NUMBER_0     &kp N1        &kp N2    &kp N3        &kp N0        &none
+                        &kp LEFT_GUI  &trans   &kp SPACE    &kp SPACE        &trans        &kp RALT
             >;
         };
 
