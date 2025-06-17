@@ -1,7 +1,7 @@
 # ⌨️ ZMK Config - Corne Keyboard (Nice!OLED Edition)
 
-Configuración personalizada para mi teclado dividido **Corne**, con soporte para pantalla OLED, modtap, macros, combos y RGB funcional.  
-Incluye mejoras de productividad para programación, diseño y uso general.
+Configuración personalizada para mi teclado dividido **Corne**, con soporte para pantalla OLED en ambos lados, modtap, macros, combos y RGB funcional.  
+Distribución **Colemak**, pensada para productividad, programación y diseño.
 
 ---
 
@@ -17,8 +17,8 @@ Incluye mejoras de productividad para programación, diseño y uso general.
 ## 🔧 Cambios principales
 
 ### 🧩 Hardware
-- **Teclado:** Corne (con Nice!Nano v2)
-- **Pantalla:** Nice!OLED (instalada en el lado izquierdo)
+- **Teclado:** Corne (con ProMicro NRF52840)
+- **Pantalla:** Nice!OLED en ambos lados
 - **RGB:** Activado con efecto `Swirl` y brillo inicial al 15%
 - **Bluetooth:** Potencia TX mejorada (`CONFIG_BT_CTLR_TX_PWR_PLUS_8=y`)
 
@@ -29,26 +29,20 @@ Incluye mejoras de productividad para programación, diseño y uso general.
 - `CONFIG_ZMK_DISPLAY=y`
 - `CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM=y`
 
-En el lado **derecho**, para evitar errores de compilación (`multiple definition`):
-
-```conf
-CONFIG_ZMK_DISPLAY=n
-```
-
 ### Widgets activos:
-- Capa activa (`layer status`)
+- Estado de capa (`layer status`)
 - Porcentaje de batería
-- Conexión activa (BLE/USB)
+- Estado de conexión (BLE/USB)
 - WPM (Words Per Minute)
-- Luna (mascota animada, si está activada)
+- Luna (mascota animada, opcional)
 
 ---
 
-## ⌘ Modtap
+## ⌘ Modtap (Home Row Mods)
 
 Teclas que actúan como **modificador si se mantienen** y como **tecla normal si se tocan rápidamente**.
 
-Ejemplos:
+Ejemplo:
 
 ```dts
 &mt LCTRL A     // A si la tocas, Ctrl si la mantienes
@@ -62,105 +56,136 @@ CONFIG_ZMK_HOLD_TAP_DELAY_MS=200
 CONFIG_ZMK_HOLD_TAP_PER_KEY=y
 ```
 
+Además, se usa una macro HRM (`MAKE_HRM`) en `helpers.h` para modular los home row mods sin timers externos.
+
 ---
 
 ## 🔀 Combos
 
-Combinaciones de dos teclas que disparan otra tecla:
+Combinaciones de dos teclas que disparan otra tecla. Configurados desde keymap.
 
-| Combo | Teclas combinadas | Resultado |
-|-------|--------------------|-----------|
-| `tab` | home row derecha   | Tabulador |
-| `ctrl` | home row izquierda| Control   |
-| `cmd` | fila inferior      | Cmd/GUI   |
-
-Configurados con el editor visual de keymap.
+| Combo   | Teclas combinadas     | Resultado |
+|---------|------------------------|-----------|
+| `tab`   | home row derecha       | Tabulador |
+| `ctrl`  | home row izquierda     | Control   |
+| `cmd`   | teclas inferiores      | Cmd/GUI   |
 
 ---
 
 ## ⚙️ Macros
 
-Automatización de combinaciones complejas.
+Automatización de secuencias complejas.
 
 Ejemplo útil:
 
-- **Centrar texto en After Effects**:
-  ```plaintext
-  CTRL + ALT + SHIFT + HOME
-  ```
+```plaintext
+CTRL + ALT + SHIFT + HOME
+```
 
-Macro asignado a una tecla con `&macro_press`.
-
-Otros macros: letras automáticas (`Z`, `M`, `K`) o comandos frecuentes.
+Usado para centrar texto en After Effects. Implementado con `&macro_press`.
 
 ---
 
 ## 🌈 RGB Underglow
 
-- Activado:
-  ```conf
-  CONFIG_ZMK_RGB_UNDERGLOW=y
-  ```
-- Efecto:
-  ```conf
-  CONFIG_ZMK_RGB_UNDERGLOW_EFF_START=3  // Swirl
-  ```
-- Color inicial:
-  ```conf
-  CONFIG_ZMK_RGB_UNDERGLOW_HUE_START=240
-  CONFIG_ZMK_RGB_UNDERGLOW_SAT_START=10
-  CONFIG_ZMK_RGB_UNDERGLOW_BRT_START=15
-  ```
+Activado en `corne.conf`:
+
+```conf
+CONFIG_ZMK_RGB_UNDERGLOW=y
+CONFIG_ZMK_RGB_UNDERGLOW_EFF_START=3  // Swirl
+CONFIG_ZMK_RGB_UNDERGLOW_HUE_START=240
+CONFIG_ZMK_RGB_UNDERGLOW_SAT_START=10
+CONFIG_ZMK_RGB_UNDERGLOW_BRT_START=15
+```
 
 ---
 
-## 🧪 Extras
+## 🧪 Extras útiles
 
-- `CONFIG_ZMK_EXT_POWER=y`: apaga el OLED si no hay USB
-- `CONFIG_ZMK_BLE_EXPERIMENTAL_CONN=y`: más estabilidad con Windows/iPad
-- `CONFIG_ZMK_KSCAN_DEBOUNCE_PRESS_MS=1`: menor latencia en pulsación
+- `CONFIG_ZMK_EXT_POWER=y`: apaga OLED si no hay USB
+- `CONFIG_ZMK_BLE_EXPERIMENTAL_CONN=y`: mejora conexión BLE
+- `CONFIG_ZMK_KSCAN_DEBOUNCE_PRESS_MS=1`: menos latencia
 
 ---
 
 ## 🧼 Problemas resueltos
 
 - ❌ `multiple definition of 'widget_layer_status'`  
-  ✅ Solucionado desactivando `CONFIG_ZMK_DISPLAY` en el lado derecho (`corne_right`).
+  ✅ Se solucionó estructurando correctamente los módulos OLED y evitando conflicto entre lados.
 
 ---
 
 ## 📁 Archivos incluidos
 
-| Archivo | Descripción |
-|--------|-------------|
-| `assets/my_keymap.png` | Vista gráfica del layout |
-| `assets/my_keymap.svg` | Versión vectorial editable del layout |
+| Archivo                | Descripción                            |
+|------------------------|----------------------------------------|
+| `assets/my_keymap.png`| Vista gráfica del layout               |
+| `assets/my_keymap.svg`| Versión vectorial editable del layout  |
+| `corne.conf`          | Configuración principal del teclado    |
+| `corne.keymap`        | Keymap con combos/macros/modtap        |
+| `helpers.h`           | Home row mods personalizados (HRM)     |
+| `keys.h`              | Definición estructural de columnas     |
+| `west.yml`            | Configuración de módulos y dependencias|
 
 ---
 
 ## 🧩 Herramientas utilizadas
 
-- [keymap-editor (Nick Coutsos)](https://nickcoutsos.github.io/keymap-editor/) – Para crear combos/macros visualmente
-- [zmk-nice-oled (M. Zeglinski fork)](https://github.com/mzeglinski/zmk-nice-oled) – Módulo con soporte para múltiples widgets
-- [ZMK Firmware](https://zmk.dev/) – Firmware principal para teclados mecánicos inalámbricos
+- [keymap-editor](https://nickcoutsos.github.io/keymap-editor/)
+- [zmk-nice-oled](https://github.com/mzeglinski/zmk-nice-oled)
+- [ZMK Firmware](https://zmk.dev/)
 
 ---
 
-## ⚙️ Instrucciones básicas para compilar
+## 🛠️ Instalación de Firmware ZMK
+
+ZMK permite compilar el firmware de dos formas: **en la nube (GitHub Actions)** o **localmente**.
+
+### 📡 GitHub Actions (recomendado)
+
+1. Crea un repo vacío en GitHub llamado `zmk-config`  
+2. Ejecuta:
 
 ```bash
-# 1. Entra al directorio
+bash -c "$(curl -fsSL https://zmk.dev/setup.sh)"
+```
+
+3. Selecciona teclado, MCU, usuario y repo.  
+4. GitHub compilará el firmware automáticamente.
+5. Descarga los `.uf2` desde la pestaña **Actions**.
+
+### 💻 Compilación local
+
+```bash
+git clone https://github.com/zmkfirmware/zmk
+git clone https://github.com/tu_usuario/zmk-config
 cd zmk-config
 
-# 2. Compila para el lado izquierdo
-west build -s app -d build/left -b nice_nano_v2 -- -DSHIELD=corne_left
+# Lado izquierdo
+west build -s zmk/app -d build/left -b nice_nano_v2 -- -DSHIELD=corne_left
 
-# 3. Flashea
-nrfutil dfu usb-serial -pkg build/left/zephyr/zmk.uf2
-
-# 4. Repite para el lado derecho, o desactiva OLED ahí:
-west build -s app -d build/right -b nice_nano_v2 -- -DSHIELD=corne_right
+# Lado derecho
+west build -s zmk/app -d build/right -b nice_nano_v2 -- -DSHIELD=corne_right
 ```
+
+### 🚀 Flashear firmware
+
+1. Presiona dos veces el botón reset en el nice!nano
+2. Aparecerá como dispositivo USB
+3. Copia el `.uf2` correspondiente
+4. Reinicia automáticamente
+
+### 🔄 Teclado dividido
+
+- Solo el lado izquierdo envía salida (USB/BLE)
+- El derecho se conecta automáticamente si está pareado
+- Asegúrate que ambos tengan energía
+
+### 📶 Bluetooth
+
+- ZMK anuncia el dispositivo si no está conectado
+- Empareja desde tu celular o laptop
+- Soporte para múltiples perfiles BLE
 
 ---
 
@@ -172,114 +197,9 @@ Junio 2025
 
 ---
 
-## ❤️ Créditos y agradecimientos
+## ❤️ Créditos
 
 - ZMK Community  
-- Nick Coutsos (por el visual keymap editor)  
-- M. Zeglinski (por el fork funcional de nice-oled)  
-- Todos los contribuidores del ecosistema QMK/ZMK
-
-
----
-
-## 🛠️ Instalación de Firmware ZMK
-
-ZMK permite dos formas de compilar e instalar tu firmware: **localmente** o usando **GitHub Actions (online)**.
-
----
-
-### 📡 Opción 1: Usar GitHub Actions (Recomendado)
-
-ZMK ha sido diseñado para que puedas mantener tu configuración personal (keymap, widgets, macros, etc.) sin modificar el repositorio principal de ZMK.
-
-#### 🧪 Ventajas:
-- No necesitas instalar toolchains o entornos complejos.
-- GitHub Actions compila tu firmware automáticamente en la nube.
-- Puedes descargar los `.uf2` listos para flashear desde la pestaña **Actions** de tu repositorio.
-
-#### 🪜 Pasos rápidos:
-1. Crea un nuevo repo llamado `zmk-config` en GitHub (vacío, sin README).
-2. Ejecuta el script oficial:
-
-```bash
-bash -c "$(curl -fsSL https://zmk.dev/setup.sh)"
-```
-
-3. Selecciona:
-   - Tu teclado (ej. Corne)
-   - Tu MCU (ej. nice!nano v2)
-   - Tu usuario y repo en GitHub
-
-4. El script:
-   - Clonará el template
-   - Configurará tu `shield` y `board`
-   - Subirá tu configuración y activará GitHub Actions
-
-5. Espera a que termine la compilación (Actions → última build → download firmware).
-6. Flashea el `.uf2` en tu teclado.
-
----
-
-### 💻 Opción 2: Compilación local
-
-Requiere tener el entorno de compilación de Zephyr y ZMK instalado (Linux/Mac recomendado).
-
-#### 🧪 Requisitos:
-- Git
-- Python 3
-- Zephyr toolchain
-- West
-
-#### 🪜 Compilar localmente
-
-```bash
-# Clona ZMK y tu config
-git clone https://github.com/zmkfirmware/zmk
-git clone https://github.com/tu_usuario/zmk-config
-
-# Entra al folder de configuración
-cd zmk-config
-
-# Compila lado izquierdo
-west build -s zmk/app -d build/left -b nice_nano_v2 -- -DSHIELD=corne_left
-
-# Compila lado derecho
-west build -s zmk/app -d build/right -b nice_nano_v2 -- -DSHIELD=corne_right
-```
-
----
-
-### 🚀 Flasheo del firmware (.uf2)
-
-1. Presiona dos veces el botón de reset en tu nice!nano para entrar en modo bootloader.
-2. Tu computadora detectará un dispositivo tipo USB.
-3. Copia el archivo `.uf2` que corresponde (ej. `corne_left.uf2`) al dispositivo USB.
-4. Se flasheará y reiniciará automáticamente.
-
----
-
-### 🔄 Teclado dividido (Split Keyboards)
-
-- Solo el lado maestro (izquierdo por lo general) se conecta por USB o Bluetooth.
-- El lado esclavo se conecta al maestro automáticamente tras el encendido si ya fueron pareados.
-- Asegúrate de que ambos lados tengan batería o estén alimentados.
-
----
-
-### 📶 Conexión Bluetooth
-
-- Al encender, ZMK anunciará el dispositivo si no está emparejado.
-- Usa tu celular, tablet o laptop para emparejarlo vía Bluetooth.
-- ZMK soporta múltiples perfiles Bluetooth (multi-host switching).
-- Revisa la documentación para conocer los atajos y comportamientos BLE.
-
----
-
-### 🧯 Problemas comunes
-
-- ⚠️ Si no se conectan los halves: verifica la energía y reinicia ambos al mismo tiempo.
-- ⚠️ Si no aparece el dispositivo: revisa que esté en modo bootloader.
-- ⚠️ Problemas con el pairing: borra el perfil en tu dispositivo y vuelve a emparejar.
-
----
-
+- Nick Coutsos (keymap editor)  
+- M. Zeglinski (nice-oled fork)  
+- Todos los contribuidores del ecosistema ZMK
