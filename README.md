@@ -1,175 +1,112 @@
-# Yahir Salazar's ZMK Config – Colemak OLED Edition ✨
+# Yahir’s Corne Keyboard ZMK Config
 
-Este es mi firmware personalizado para mi teclado dividido Corne, con pantalla OLED funcional en ambos lados, RGB, macros y modificaciones al home row. El diseño está basado en la distribución **Colemak** con mejoras centradas en escritura, diseño, programación y navegación eficiente.
-
----
-
-## 🛠️ Características Principales
-
-- Pantalla **Nice!OLED** personalizada en ambos lados (izquierdo y derecho).
-- Distribución **Colemak** modificada con Home Row Mods tipo HRM sin temporizador (`MAKE_HRM`).
-- Iluminación **RGB Underglow** con efecto `Swirl` y colores suaves preconfigurados.
-- Configuración diseñada para **ZMK Studio**, con integración para visualización en vivo.
-- **Combos**, **Macros** y capas diseñadas para productividad, edición y control.
-- Código modular, limpio y mantenible usando archivos como `helpers.h`, `keys.h`, `corne.keymap`.
+Este es mi setup personal de ZMK para un teclado dividido tipo Corne. Está hecho desde cero, buscando comodidad, estética y funcionalidad para uso diario, diseño, gaming y escritura fluida.
 
 ---
 
-## 🧠 Home Row Mods (HRM)
+## 🧠 Características principales
 
-El corazón de la configuración. Utilizo un sistema inspirado en la técnica de urob sin temporizador directo para los modificadores del home row. Estos están definidos en `helpers.h` mediante:
+- Layout personalizado Colemak-DH con Home Row Mods (HRM) sin temporizador (inspirado en urob)
+- Configuración OLED custom usando nice!oled y nice!nano v2
+- Macros personalizadas y combos para flujo de trabajo eficiente
+- RGB underglow activo con efectos swirl
+- ModTap (modificadores en letras) y capas espejo para navegación con una sola mano
+- Sistema Bluetooth experimental activado
+- Archivos limpios y organizados (`helpers.h`, `keys.h`, `corne.keymap`)
+
+---
+
+## 🎨 Capas principales
+
+### 1. ALPHA (Base)
+- Colemak-DH con modificadores en la fila central (Ctrl, Alt, GUI, Shift).
+- Tap = letra | Hold = modificador.
+- Espacio en pulgares y navegación rápida.
+
+### 2. NAV
+- Flechas en la fila central, sin mover manos.
+- Acceso rápido a home, end, page up/down, delete.
+
+### 3. SIMB
+- Caracteres especiales y símbolos comunes `{ } [ ] ( )` alineados para escribir sin mirar.
+- Inspirado por capas de programación.
+
+### 4. NUM
+- Numpad al estilo teclado normal en la derecha.
+- Incluye coma para notación francesa y puntuación rápida.
+
+### 5. FUNC
+- F1–F12 y más: acceso a mute, Discord, Bluetooth swap.
+- Layer sin HRM para acceso directo a modifiers sin retardo.
+
+---
+
+## 🔀 Combos activos
+
+- `Q + W` → ESC
+- `F + J` → TAB
+- `D + K` → ENTER
+- `S + L` → BACKSPACE
+
+Pensados para ejecutarse con ambas manos sin interrumpir la escritura.
+
+---
+
+## 🔁 Macros útiles
+
+(Algunas incompletas o en construcción)
 
 ```c
-#define MAKE_HRM(NAME, HOLD, TAP, TRIGGER_POS) ...
+// Ejemplo de macro para abrir consola
+&macro_press &kp LC(LA(T))
 ```
 
-La implementación se apoya en la variable `HRM_TAPPING_TERM` de 400ms, con ajustes finos para evitar falsos positivos en letras comunes como `s` o `t`.
-
-Esto permite escribir rápido y con fluidez sin sacrificar acceso inmediato a Ctrl, Alt, Shift y Cmd.
+Puedes definir combinaciones complejas como abrir una app, pegar texto, etc.
 
 ---
 
-## ⌘ Combos y Macros
+## 💡 OLED activado
 
-Utilizo combos en zonas estratégicas para maximizar la eficiencia sin saturar las capas:
-
-| Combo   | Teclas             | Acción     |
-|---------|--------------------|------------|
-| `TAB`   | Home row derecha   | Tabulador  |
-| `CTRL`  | Home row izquierda | Control    |
-| `CMD`   | Inferior izquierda | Cmd/GUI    |
-
-Además, tengo una macro personalizada (`&Centrar`) que ejecuta `Ctrl + Alt + Shift + Home`, ideal para centrar objetos/texto en After Effects con un solo toque.
+- Pantalla izquierda: animaciones y estado.
+- Pantalla derecha: sin display (actualmente).
+- Widgets desactivados para evitar conflictos (`layer`, `battery`, etc.).
 
 ---
 
-## 🌈 RGB Configuración
+## 🌈 RGB UnderGlow
 
-Mi configuración incluye:
-
-```conf
-CONFIG_ZMK_RGB_UNDERGLOW=y
-CONFIG_ZMK_RGB_UNDERGLOW_EFF_START=3   # Swirl
-CONFIG_ZMK_RGB_UNDERGLOW_HUE_START=240
-CONFIG_ZMK_RGB_UNDERGLOW_SAT_START=10
-CONFIG_ZMK_RGB_UNDERGLOW_BRT_START=15
-```
-
-Con transiciones suaves y brillo medio-bajo para evitar fatiga visual.
+- Activado efecto “swirl” por defecto (`CONFIG_ZMK_RGB_UNDERGLOW_EFF_START=3`)
+- Brillo inicial moderado: 15%
+- Color base azul: `HUE_START=240`
+- Saturación baja para estética suave: `SAT_START=10`
 
 ---
 
-## 🖥️ Pantalla OLED
+## 📷 Vista previa del layout
 
-Ambos lados del Corne tienen OLED funcional. Se muestran:
-
-- Capa activa (layer)
-- Porcentaje de batería
-- Estado de conexión USB/BLE
-- WPM (Words Per Minute)
-- Widget Luna activo (cuando habilitado)
-
-La configuración está basada en el módulo `zmk-nice-oled` corregido (fork de M. Zeglinski), con integración modular en el archivo `screen.c` y widgets custom.
+![Distribución](./layout.svg)
 
 ---
 
-## 🧪 Capas definidas
+## ⚙️ Archivos relevantes
 
-Trabajo con múltiples capas activables mediante thumbs y combinaciones, optimizadas para ergonomía y velocidad.
-
-### Alpha Layer
-- Basada en **Colemak** con teclas de control y espacio en posiciones intuitivas.
-- Home Row Mods activos.
-
-### Símbolos
-- Inspirada en Pascal Getreuer y ShelZuuz.
-- Simetría invertida `{ } [ ] ( )` para rolls internos.
-
-### Navegación / Números
-- Numpad a la derecha con coma decimal francesa.
-- Flechas colocadas en home row izquierda (como WASD).
-- Home, End, Page Up/Down debajo de las flechas.
-
-### Funciones / Media
-- F1–F12 y controles multimedia (F13/F14 → Mute/Deafen para Discord).
-- Alternancia y limpieza de perfiles Bluetooth con Shift.
-
----
-
-## 🔄 Bluetooth + Dividido (Split)
-
-- El lado izquierdo es el maestro BLE/USB.
-- El derecho se conecta automáticamente al encenderse (sincronía por reset).
-- Soporte para múltiples perfiles y cambio fluido.
-
----
-
-## ⚙️ Archivos clave
-
-| Archivo         | Función                                       |
-|----------------|-----------------------------------------------|
-| `corne.conf`    | Config ZMK personalizada (OLED, RGB, BLE, etc.) |
-| `corne.keymap`  | Layout completo con capas, combos y macros    |
-| `helpers.h`     | Macros HRM para modtap sin temporizador       |
-| `keys.h`        | Declaración estructural de posiciones          |
-| `west.yml`      | Módulos externos integrados correctamente      |
-
----
-
-## ⚡ Compilación
-
-### Online (GitHub Actions)
-
-1. Clona desde template oficial con:
-```bash
-bash -c "$(curl -fsSL https://zmk.dev/setup.sh)"
-```
-2. Configura tu MCU, shield y GitHub.
-3. GitHub Actions compilará y te dará el `.uf2`.
-
-### Local
-
-```bash
-git clone https://github.com/zmkfirmware/zmk
-git clone https://github.com/yahirsalazar/zmk-config
-cd zmk-config
-
-west build -s zmk/app -d build/left -b nice_nano_v2 -- -DSHIELD=corne_left
-west build -s zmk/app -d build/right -b nice_nano_v2 -- -DSHIELD=corne_right
-```
-
----
-
-## 📥 Flasheo
-
-1. Presiona 2x el botón reset → modo bootloader.
-2. Montará un disco USB.
-3. Copia el `.uf2` del lado correspondiente.
-4. Se reinicia solo y queda flasheado.
-
----
-
-## 🧯 Problemas comunes
-
-- OLED conflict: corregido no duplicando `widget_layer_status`.
-- HRM bug: ajustado tapping term a 400ms.
-- BLE pairing: solucionado usando `CONFIG_ZMK_BLE_EXPERIMENTAL_CONN=y`.
+- `corne.conf`: Configuraciones generales
+- `helpers.h`: Macros de HRM, combinaciones y aliases
+- `keys.h`: Mapeo de posiciones de teclas
+- `corne.keymap`: Lógica de capas, combos, modtap y macros
+- `west.yml`: Dependencias (zmk-nice-oled, helpers, etc.)
 
 ---
 
 ## 🙌 Créditos
 
-- urob (HRM original)
-- Nick Coutsos (keymap editor)
+Inspirado por:
+- urob (HRM y estructura modular)
+- kevinpastor (documentación y macros limpias)
+- mctechnology17 (nice!oled)
+- Colemak-DH community
 - Pascal Getreuer (símbolos ergonómicos)
-- M. Zeglinski (nice-oled fork)
-- Comunidad ZMK y QMK por tanto conocimiento compartido ❤️
 
 ---
 
-## ✍️ Autor
-
-**Yahir Salazar**  
-Corne / ZMK Power User  
-Junio 2025  
-[github.com/yahirsalazar](https://github.com/yahirsalazar)
+Disfruta este layout, modifícalo y hazlo tuyo ✨
