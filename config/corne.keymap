@@ -55,7 +55,7 @@
             // | SHFT |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | ESC  |
             //                    | GUI | LWR | SPC |   | ENT | RSE  | ALT |
 
-            display-name = "Base";
+            display-name = "Cole";
             bindings = <
 &kp TAB    &kp Q           &kp W        &kp F         &kp P      &kp B        &kp J       &kp L            &kp U       &kp Y    &kp SEMICOLON  &kp ESC
 &kp LSHFT  &kp A           &kp R        &kp S         &kp T      &kp G        &kp M       &kp N            &kp E       &kp I    &kp O          &kp MINUS
@@ -71,7 +71,7 @@
             // | SHFT |     |     |     |     |     |   |     |     |     |     |     |      |
             //                    | GUI |     | SPC |   | ENT |     | ALT |
 
-            display-name = "Lower";
+            display-name = "Func";
             bindings = <
 &Centrar      &none  &kp LC(X)  &kp LC(C)  &kp LC(V)        &kp C_BRIGHTNESS_INC    &none            &none           &kp UP_ARROW  &none       &none  &none
 &cut          &none  &none      &none      &kp PRINTSCREEN  &kp C_BRI_DEC           &none            &kp LEFT_ARROW  &kp DOWN      &kp RIGHT   &none  &none
@@ -87,7 +87,7 @@
             // | SHFT |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
             //                    | GUI |     | SPC |   | ENT |     | ALT |
 
-            display-name = "Raise";
+            display-name = "Symb";
             bindings = <
 &none  &kp EXCLAMATION  &kp AT  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp PRCNT    &kp EQUAL        &none      &none      &none          &none          &kp BSPC
 &none  &none            &none   &kp LEFT_BRACE        &kp RIGHT_BRACE        &none        &kp EXCLAMATION  &kp HASH   &kp SLASH  &kp BACKSLASH  &kp PIPE       &kp DLLR
@@ -97,7 +97,7 @@
         };
 
         Numbs {
-            display-name = "Extra 1";
+            display-name = "Numbs";
             bindings = <
 &none  &none  &none  &none         &none   &none        &kp KP_PLUS      &kp NUMBER_7  &kp N8    &kp N9        &kp KP_MINUS  &none
 &none  &none  &none  &none         &none   &none        &kp KP_MULTIPLY  &kp NUMBER_4  &kp N5    &kp NUMBER_6  &kp SLASH     &none
