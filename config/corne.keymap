@@ -55,12 +55,12 @@
             // | SHFT |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | ESC  |
             //                    | GUI | LWR | SPC |   | ENT | RSE  | ALT |
 
-            display-name = "Cole";
+            display-name = "Base";
             bindings = <
-&kp TAB       &kp Q           &kp W        &kp F         &kp P      &kp B        &kp J       &kp L            &kp U       &kp Y    &kp SEMICOLON  &kp ESC
-&kp LSHFT     &kp A           &kp R        &kp S         &kp T      &kp G        &kp M       &kp N            &kp E       &kp I    &kp O          &kp MINUS
-&kp LEFT_ALT  &mt LEFT_WIN Z  &mt LCTRL X  &kp C         &kp D      &kp V        &kp K       &kp H            &kp COMMA   &kp DOT  &kp FSLH       &mt RSHFT SLASH
-                                           &kp LEFT_ALT  &lt 1 TAB  &kp SPACE    &kp RETURN  &lt 2 BACKSPACE  &kp DELETE
+&kp TAB    &kp Q           &kp W        &kp F         &kp P      &kp B        &kp J       &kp L            &kp U       &kp Y    &kp SEMICOLON  &kp ESC
+&kp LSHFT  &kp A           &kp R        &kp S         &kp T      &kp G        &kp M       &kp N            &kp E       &kp I    &kp O          &kp MINUS
+&kp LCTRL  &mt LEFT_WIN Z  &mt LCTRL X  &kp C         &kp D      &kp V        &kp K       &kp H            &kp COMMA   &kp DOT  &kp FSLH       &mt RSHFT SLASH
+                                        &kp LEFT_ALT  &lt 1 TAB  &kp SPACE    &kp RETURN  &lt 2 BACKSPACE  &kp DELETE
             >;
         };
 
@@ -71,7 +71,7 @@
             // | SHFT |     |     |     |     |     |   |     |     |     |     |     |      |
             //                    | GUI |     | SPC |   | ENT |     | ALT |
 
-            display-name = "Funciones";
+            display-name = "Lower";
             bindings = <
 &Centrar      &none  &kp LC(X)  &kp LC(C)  &kp LC(V)        &kp C_BRIGHTNESS_INC    &none            &none           &kp UP_ARROW  &none       &none  &none
 &cut          &none  &none      &none      &kp PRINTSCREEN  &kp C_BRI_DEC           &none            &kp LEFT_ARROW  &kp DOWN      &kp RIGHT   &none  &none
@@ -87,7 +87,7 @@
             // | SHFT |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
             //                    | GUI |     | SPC |   | ENT |     | ALT |
 
-            display-name = "Simbolos";
+            display-name = "Raise";
             bindings = <
 &none  &kp EXCLAMATION  &kp AT  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp PRCNT    &kp EQUAL        &none      &none      &none          &none          &kp BSPC
 &none  &none            &none   &kp LEFT_BRACE        &kp RIGHT_BRACE        &none        &kp EXCLAMATION  &kp HASH   &kp SLASH  &kp BACKSLASH  &kp PIPE       &kp DLLR
@@ -97,7 +97,7 @@
         };
 
         Numbs {
-            display-name = "Numbs";
+            display-name = "Extra 1";
             bindings = <
 &none  &none  &none  &none         &none   &none        &kp KP_PLUS      &kp NUMBER_7  &kp N8    &kp N9        &kp KP_MINUS  &none
 &none  &none  &none  &none         &none   &none        &kp KP_MULTIPLY  &kp NUMBER_4  &kp N5    &kp NUMBER_6  &kp SLASH     &none
@@ -107,7 +107,7 @@
         };
 
         extra_2 {
-            display-name = "RGB";
+            display-name = "Extra 2";
             bindings = <
 &kp C_RESET      &none            &none            &none            &none                              &none        &none      &none   &none     &none  &none  &none
 &rgb_ug RGB_TOG  &rgb_ug RGB_HUI  &rgb_ug RGB_SAI  &rgb_ug RGB_BRI  &rgb_ug RGB_COLOR_HSB(269,100,52)  &none        &none      &none   &none     &none  &none  &none
