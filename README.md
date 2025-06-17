@@ -1,205 +1,175 @@
-# ⌨️ ZMK Config - Corne Keyboard (Nice!OLED Edition)
+# Yahir Salazar's ZMK Config – Colemak OLED Edition ✨
 
-Configuración personalizada para mi teclado dividido **Corne**, con soporte para pantalla OLED en ambos lados, modtap, macros, combos y RGB funcional.  
-Distribución **Colemak**, pensada para productividad, programación y diseño.
-
----
-
-## 📷 Vista de la distribución
-
-![Distribución del teclado](assets/my_keymap.png)
-
-📄 También puedes ver la versión editable en vector:  
-[🔗 Ver SVG (my_keymap.svg)](assets/my_keymap.svg)
+Este es mi firmware personalizado para mi teclado dividido Corne, con pantalla OLED funcional en ambos lados, RGB, macros y modificaciones al home row. El diseño está basado en la distribución **Colemak** con mejoras centradas en escritura, diseño, programación y navegación eficiente.
 
 ---
 
-## 🔧 Cambios principales
+## 🛠️ Características Principales
 
-### 🧩 Hardware
-- **Teclado:** Corne (con ProMicro NRF52840)
-- **Pantalla:** Nice!OLED en ambos lados
-- **RGB:** Activado con efecto `Swirl` y brillo inicial al 15%
-- **Bluetooth:** Potencia TX mejorada (`CONFIG_BT_CTLR_TX_PWR_PLUS_8=y`)
-
----
-
-## 🖥️ Pantalla OLED
-
-- `CONFIG_ZMK_DISPLAY=y`
-- `CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM=y`
-
-### Widgets activos:
-- Estado de capa (`layer status`)
-- Porcentaje de batería
-- Estado de conexión (BLE/USB)
-- WPM (Words Per Minute)
-- Luna (mascota animada, opcional)
+- Pantalla **Nice!OLED** personalizada en ambos lados (izquierdo y derecho).
+- Distribución **Colemak** modificada con Home Row Mods tipo HRM sin temporizador (`MAKE_HRM`).
+- Iluminación **RGB Underglow** con efecto `Swirl` y colores suaves preconfigurados.
+- Configuración diseñada para **ZMK Studio**, con integración para visualización en vivo.
+- **Combos**, **Macros** y capas diseñadas para productividad, edición y control.
+- Código modular, limpio y mantenible usando archivos como `helpers.h`, `keys.h`, `corne.keymap`.
 
 ---
 
-## ⌘ Modtap (Home Row Mods)
+## 🧠 Home Row Mods (HRM)
 
-Teclas que actúan como **modificador si se mantienen** y como **tecla normal si se tocan rápidamente**.
+El corazón de la configuración. Utilizo un sistema inspirado en la técnica de urob sin temporizador directo para los modificadores del home row. Estos están definidos en `helpers.h` mediante:
 
-Ejemplo:
-
-```dts
-&mt LCTRL A     // A si la tocas, Ctrl si la mantienes
-&mt LALT SPACE  // Space si la tocas, Alt si la mantienes
+```c
+#define MAKE_HRM(NAME, HOLD, TAP, TRIGGER_POS) ...
 ```
 
-Parámetros importantes:
+La implementación se apoya en la variable `HRM_TAPPING_TERM` de 400ms, con ajustes finos para evitar falsos positivos en letras comunes como `s` o `t`.
 
-```conf
-CONFIG_ZMK_HOLD_TAP_DELAY_MS=200
-CONFIG_ZMK_HOLD_TAP_PER_KEY=y
-```
-
-Además, se usa una macro HRM (`MAKE_HRM`) en `helpers.h` para modular los home row mods sin timers externos.
+Esto permite escribir rápido y con fluidez sin sacrificar acceso inmediato a Ctrl, Alt, Shift y Cmd.
 
 ---
 
-## 🔀 Combos
+## ⌘ Combos y Macros
 
-Combinaciones de dos teclas que disparan otra tecla. Configurados desde keymap.
+Utilizo combos en zonas estratégicas para maximizar la eficiencia sin saturar las capas:
 
-| Combo   | Teclas combinadas     | Resultado |
-|---------|------------------------|-----------|
-| `tab`   | home row derecha       | Tabulador |
-| `ctrl`  | home row izquierda     | Control   |
-| `cmd`   | teclas inferiores      | Cmd/GUI   |
+| Combo   | Teclas             | Acción     |
+|---------|--------------------|------------|
+| `TAB`   | Home row derecha   | Tabulador  |
+| `CTRL`  | Home row izquierda | Control    |
+| `CMD`   | Inferior izquierda | Cmd/GUI    |
 
----
-
-## ⚙️ Macros
-
-Automatización de secuencias complejas.
-
-Ejemplo útil:
-
-```plaintext
-CTRL + ALT + SHIFT + HOME
-```
-
-Usado para centrar texto en After Effects. Implementado con `&macro_press`.
+Además, tengo una macro personalizada (`&Centrar`) que ejecuta `Ctrl + Alt + Shift + Home`, ideal para centrar objetos/texto en After Effects con un solo toque.
 
 ---
 
-## 🌈 RGB Underglow
+## 🌈 RGB Configuración
 
-Activado en `corne.conf`:
+Mi configuración incluye:
 
 ```conf
 CONFIG_ZMK_RGB_UNDERGLOW=y
-CONFIG_ZMK_RGB_UNDERGLOW_EFF_START=3  // Swirl
+CONFIG_ZMK_RGB_UNDERGLOW_EFF_START=3   # Swirl
 CONFIG_ZMK_RGB_UNDERGLOW_HUE_START=240
 CONFIG_ZMK_RGB_UNDERGLOW_SAT_START=10
 CONFIG_ZMK_RGB_UNDERGLOW_BRT_START=15
 ```
 
----
-
-## 🧪 Extras útiles
-
-- `CONFIG_ZMK_EXT_POWER=y`: apaga OLED si no hay USB
-- `CONFIG_ZMK_BLE_EXPERIMENTAL_CONN=y`: mejora conexión BLE
-- `CONFIG_ZMK_KSCAN_DEBOUNCE_PRESS_MS=1`: menos latencia
+Con transiciones suaves y brillo medio-bajo para evitar fatiga visual.
 
 ---
 
-## 🧼 Problemas resueltos
+## 🖥️ Pantalla OLED
 
-- ❌ `multiple definition of 'widget_layer_status'`  
-  ✅ Se solucionó estructurando correctamente los módulos OLED y evitando conflicto entre lados.
+Ambos lados del Corne tienen OLED funcional. Se muestran:
 
----
+- Capa activa (layer)
+- Porcentaje de batería
+- Estado de conexión USB/BLE
+- WPM (Words Per Minute)
+- Widget Luna activo (cuando habilitado)
 
-## 📁 Archivos incluidos
-
-| Archivo                | Descripción                            |
-|------------------------|----------------------------------------|
-| `assets/my_keymap.png`| Vista gráfica del layout               |
-| `assets/my_keymap.svg`| Versión vectorial editable del layout  |
-| `corne.conf`          | Configuración principal del teclado    |
-| `corne.keymap`        | Keymap con combos/macros/modtap        |
-| `helpers.h`           | Home row mods personalizados (HRM)     |
-| `keys.h`              | Definición estructural de columnas     |
-| `west.yml`            | Configuración de módulos y dependencias|
+La configuración está basada en el módulo `zmk-nice-oled` corregido (fork de M. Zeglinski), con integración modular en el archivo `screen.c` y widgets custom.
 
 ---
 
-## 🧩 Herramientas utilizadas
+## 🧪 Capas definidas
 
-- [keymap-editor](https://nickcoutsos.github.io/keymap-editor/)
-- [zmk-nice-oled](https://github.com/mzeglinski/zmk-nice-oled)
-- [ZMK Firmware](https://zmk.dev/)
+Trabajo con múltiples capas activables mediante thumbs y combinaciones, optimizadas para ergonomía y velocidad.
+
+### Alpha Layer
+- Basada en **Colemak** con teclas de control y espacio en posiciones intuitivas.
+- Home Row Mods activos.
+
+### Símbolos
+- Inspirada en Pascal Getreuer y ShelZuuz.
+- Simetría invertida `{ } [ ] ( )` para rolls internos.
+
+### Navegación / Números
+- Numpad a la derecha con coma decimal francesa.
+- Flechas colocadas en home row izquierda (como WASD).
+- Home, End, Page Up/Down debajo de las flechas.
+
+### Funciones / Media
+- F1–F12 y controles multimedia (F13/F14 → Mute/Deafen para Discord).
+- Alternancia y limpieza de perfiles Bluetooth con Shift.
 
 ---
 
-## 🛠️ Instalación de Firmware ZMK
+## 🔄 Bluetooth + Dividido (Split)
 
-ZMK permite compilar el firmware de dos formas: **en la nube (GitHub Actions)** o **localmente**.
+- El lado izquierdo es el maestro BLE/USB.
+- El derecho se conecta automáticamente al encenderse (sincronía por reset).
+- Soporte para múltiples perfiles y cambio fluido.
 
-### 📡 GitHub Actions (recomendado)
+---
 
-1. Crea un repo vacío en GitHub llamado `zmk-config`  
-2. Ejecuta:
+## ⚙️ Archivos clave
 
+| Archivo         | Función                                       |
+|----------------|-----------------------------------------------|
+| `corne.conf`    | Config ZMK personalizada (OLED, RGB, BLE, etc.) |
+| `corne.keymap`  | Layout completo con capas, combos y macros    |
+| `helpers.h`     | Macros HRM para modtap sin temporizador       |
+| `keys.h`        | Declaración estructural de posiciones          |
+| `west.yml`      | Módulos externos integrados correctamente      |
+
+---
+
+## ⚡ Compilación
+
+### Online (GitHub Actions)
+
+1. Clona desde template oficial con:
 ```bash
 bash -c "$(curl -fsSL https://zmk.dev/setup.sh)"
 ```
+2. Configura tu MCU, shield y GitHub.
+3. GitHub Actions compilará y te dará el `.uf2`.
 
-3. Selecciona teclado, MCU, usuario y repo.  
-4. GitHub compilará el firmware automáticamente.
-5. Descarga los `.uf2` desde la pestaña **Actions**.
-
-### 💻 Compilación local
+### Local
 
 ```bash
 git clone https://github.com/zmkfirmware/zmk
-git clone https://github.com/tu_usuario/zmk-config
+git clone https://github.com/yahirsalazar/zmk-config
 cd zmk-config
 
-# Lado izquierdo
 west build -s zmk/app -d build/left -b nice_nano_v2 -- -DSHIELD=corne_left
-
-# Lado derecho
 west build -s zmk/app -d build/right -b nice_nano_v2 -- -DSHIELD=corne_right
 ```
 
-### 🚀 Flashear firmware
+---
 
-1. Presiona dos veces el botón reset en el nice!nano
-2. Aparecerá como dispositivo USB
-3. Copia el `.uf2` correspondiente
-4. Reinicia automáticamente
+## 📥 Flasheo
 
-### 🔄 Teclado dividido
+1. Presiona 2x el botón reset → modo bootloader.
+2. Montará un disco USB.
+3. Copia el `.uf2` del lado correspondiente.
+4. Se reinicia solo y queda flasheado.
 
-- Solo el lado izquierdo envía salida (USB/BLE)
-- El derecho se conecta automáticamente si está pareado
-- Asegúrate que ambos tengan energía
+---
 
-### 📶 Bluetooth
+## 🧯 Problemas comunes
 
-- ZMK anuncia el dispositivo si no está conectado
-- Empareja desde tu celular o laptop
-- Soporte para múltiples perfiles BLE
+- OLED conflict: corregido no duplicando `widget_layer_status`.
+- HRM bug: ajustado tapping term a 400ms.
+- BLE pairing: solucionado usando `CONFIG_ZMK_BLE_EXPERIMENTAL_CONN=y`.
+
+---
+
+## 🙌 Créditos
+
+- urob (HRM original)
+- Nick Coutsos (keymap editor)
+- Pascal Getreuer (símbolos ergonómicos)
+- M. Zeglinski (nice-oled fork)
+- Comunidad ZMK y QMK por tanto conocimiento compartido ❤️
 
 ---
 
 ## ✍️ Autor
 
-Yahir Salazar  
+**Yahir Salazar**  
+Corne / ZMK Power User  
 Junio 2025  
 [github.com/yahirsalazar](https://github.com/yahirsalazar)
-
----
-
-## ❤️ Créditos
-
-- ZMK Community  
-- Nick Coutsos (keymap editor)  
-- M. Zeglinski (nice-oled fork)  
-- Todos los contribuidores del ecosistema ZMK
