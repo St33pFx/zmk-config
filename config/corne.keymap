@@ -48,6 +48,30 @@
 
             label = "CUT";
         };
+
+        capaCreate: capaCreate {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press>, <&kp LC(Y)>;
+
+            label = "CAPACREATE";
+        };
+
+        DuplicarCapa: DuplicarCapa {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press>, <&kp LC(D)>;
+
+            label = "DUPLICARCAPA";
+        };
+
+        LayerMask: LayerMask {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press>, <&kp LC(LA(Y))>;
+
+            label = "LAYERMASK";
+        };
     };
 
     keymap {
@@ -78,10 +102,10 @@
 
             display-name = "Func";
             bindings = <
-&Centrar      &none  &kp LC(X)  &kp LC(C)  &kp LC(V)        &kp C_BRIGHTNESS_INC    &none            &none           &kp UP_ARROW  &none       &none  &none
-&cut          &none  &kp F13    &kp F14    &kp PRINTSCREEN  &kp C_BRI_DEC           &none            &kp LEFT_ARROW  &kp DOWN      &kp RIGHT   &none  &none
-&kp LEFT_GUI  &none  &kp LC(Z)  &kp LC(Y)  &kp LC(S)        &kp C_VOL_DN            &kp C_VOLUME_UP  &kp K_PREV      &kp K_PP      &kp K_NEXT  &none  &none
-                                &kp LGUI   &trans           &kp SPACE               &kp SPACE        &mo 3           &kp RALT
+&Centrar  &none  &kp LC(X)  &kp LC(C)  &kp LC(V)        &kp C_BRIGHTNESS_INC    &none            &none           &kp UP_ARROW  &none       &none  &none
+&cut      &none  &kp F13    &kp F14    &kp PRINTSCREEN  &kp C_BRI_DEC           &none            &kp LEFT_ARROW  &kp DOWN      &kp RIGHT   &none  &none
+&mo 4     &none  &kp LC(Z)  &kp LC(Y)  &kp LC(S)        &kp C_VOL_DN            &kp C_VOLUME_UP  &kp K_PREV      &kp K_PP      &kp K_NEXT  &none  &none
+                            &kp LGUI   &trans           &kp SPACE               &kp SPACE        &mo 3           &kp RALT
             >;
         };
 
@@ -112,12 +136,12 @@
         };
 
         extra_2 {
-            display-name = "Extra 2";
+            display-name = "After";
             bindings = <
-&kp C_RESET      &none            &none            &none            &none                              &none        &none      &none   &none     &none  &none  &none
-&rgb_ug RGB_TOG  &rgb_ug RGB_HUI  &rgb_ug RGB_SAI  &rgb_ug RGB_BRI  &rgb_ug RGB_COLOR_HSB(269,100,52)  &none        &none      &none   &none     &none  &none  &none
-&rgb_ug RGB_EFF  &rgb_ug RGB_HUD  &rgb_ug RGB_SAD  &rgb_ug RGB_BRD  &none                              &none        &none      &none   &none     &none  &none  &none
-                                                   &kp LEFT_GUI     &trans                             &kp SPACE    &kp SPACE  &trans  &kp RALT
+&none   &DuplicarCapa    &LayerMask       &cut             &none   &none        &none      &none   &none     &none  &none  &none
+&none   &Centrar         &capaCreate      &DuplicarCapa    &none   &none        &none      &none   &none     &none  &none  &none
+&trans  &rgb_ug RGB_HUD  &rgb_ug RGB_SAD  &rgb_ug RGB_BRD  &none   &none        &none      &none   &none     &none  &none  &none
+                                          &kp LEFT_GUI     &trans  &kp SPACE    &kp SPACE  &trans  &kp RALT
             >;
         };
 
@@ -125,10 +149,30 @@
 
         Gaming {
             bindings = <
-&kp F13       &kp ESCAPE        &kp Q  &kp W         &kp E         &kp R        &kp Y      &kp U          &kp I      &kp O    &kp P     &trans
-&kp F14       &kp LEFT_SHIFT    &kp A  &kp S         &kp D         &kp F        &kp H      &kp J          &kp K      &kp L    &kp SEMI  &trans
-&kp LEFT_WIN  &kp LEFT_CONTROL  &kp Z  &kp X         &kp C         &kp V        &kp N      &kp M          &kp COMMA  &kp DOT  &trans    &to 0
-                                       &kp LEFT_ALT  &kp LEFT_WIN  &kp SPACE    &kp ENTER  &kp BACKSPACE  &kp DEL
+&kp ESC       &kp TAB           &kp Q  &kp W  &kp E         &kp R        &kp Y      &kp U          &kp I      &kp O    &kp P     &trans
+&kp LEFT_ALT  &kp LEFT_SHIFT    &kp A  &kp S  &kp D         &kp F        &kp H      &kp J          &kp K      &kp L    &kp SEMI  &trans
+&kp LEFT_WIN  &kp LEFT_CONTROL  &kp Z  &kp X  &kp C         &kp V        &kp N      &kp M          &kp COMMA  &kp DOT  &trans    &to 0
+                                       &mo 7  &kp LEFT_WIN  &kp SPACE    &kp ENTER  &kp BACKSPACE  &kp DEL
+            >;
+
+            label = "Game";
+        };
+
+        GAM1 {
+            bindings = <
+&kp F14       &trans  &trans  &trans  &kp N4        &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&kp F13       &trans  &trans  &trans  &kp N5        &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&kp LEFT_WIN  &trans  &trans  &trans  &kp NUMBER_6  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+                              &trans  &trans        &trans    &trans  &trans  &trans
+            >;
+        };
+
+        layer_8 {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+                        &trans  &trans  &trans    &trans  &trans  &trans
             >;
         };
     };
