@@ -35,7 +35,7 @@
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings =
-                <&macro_press>,
+                <&macro_tap>,
                 <&kp LCTRL &kp LEFT_ALT &kp LSHIFT &kp C_AC_HOME>;
 
             label = "CENTRAR";
@@ -44,7 +44,7 @@
         cut: cut {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press>, <&kp LCTRL &kp LEFT_SHIFT &kp DELETE>;
+            bindings = <&macro_tap>, <&kp LCTRL &kp LEFT_SHIFT &kp DELETE>;
 
             label = "CUT";
         };
@@ -52,7 +52,7 @@
         capaCreate: capaCreate {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press>, <&kp LC(Y)>;
+            bindings = <&macro_tap>, <&kp LC(Y)>;
 
             label = "CAPACREATE";
         };
@@ -60,7 +60,7 @@
         DuplicarCapa: DuplicarCapa {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press>, <&kp LC(D)>;
+            bindings = <&macro_tap>, <&kp LC(D)>;
 
             label = "DUPLICARCAPA";
         };
@@ -68,7 +68,7 @@
         LayerMask: LayerMask {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press>, <&kp LC(LA(Y))>;
+            bindings = <&macro_tap>, <&kp LC(LA(Y))>;
 
             label = "LAYERMASK";
         };
@@ -104,7 +104,7 @@
             bindings = <
 &Centrar  &none  &kp LC(X)  &kp LC(C)  &kp LC(V)        &kp C_BRIGHTNESS_INC    &none            &none           &kp UP_ARROW  &none       &none  &none
 &cut      &none  &kp F13    &kp F14    &kp PRINTSCREEN  &kp C_BRI_DEC           &none            &kp LEFT_ARROW  &kp DOWN      &kp RIGHT   &none  &none
-&mo 4     &none  &kp LC(Z)  &kp LC(Y)  &kp LC(S)        &kp C_VOL_DN            &kp C_VOLUME_UP  &kp K_PREV      &kp K_PP      &kp K_NEXT  &none  &none
+&mo 4     &none  &kp LC(Z)  &kp LC(Y)  &kp LC(S)        &kp C_VOL_DN            &kp C_VOLUME_UP  &kp K_PREV      &kp K_PP      &kp K_NEXT  &none  &to 6
                             &kp LGUI   &trans           &kp SPACE               &kp SPACE        &mo 3           &kp RALT
             >;
         };
