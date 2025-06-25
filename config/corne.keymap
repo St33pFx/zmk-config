@@ -177,7 +177,7 @@
             bindings = <
 &trans  &kp LC(N1)  &kp NUMBER_1  &kp N3  &kp LC(H)  &kp LS(H)    &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans        &trans  &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &kp LC(E)   &trans        &kp W   &kp E      &kp R        &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &kp LC(E)   &kp J         &kp W   &kp E      &kp R        &trans  &trans  &trans  &trans  &trans  &trans
                                   &trans  &trans     &trans       &trans  &trans  &trans
             >;
 
