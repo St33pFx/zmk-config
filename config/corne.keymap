@@ -72,6 +72,14 @@
 
             label = "LAYERMASK";
         };
+
+        altab: altab {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap>, <&kp LA(TAB)>;
+
+            label = "ALTAB";
+        };
     };
 
     keymap {
@@ -104,7 +112,7 @@
             bindings = <
 &Centrar  &none         &kp LC(X)  &kp LC(C)  &kp LC(V)        &kp C_BRIGHTNESS_INC    &none            &none           &kp UP_ARROW  &none       &none  &none
 &cut      &kp LEFT_ALT  &kp F13    &kp F14    &kp PRINTSCREEN  &kp C_BRI_DEC           &none            &kp LEFT_ARROW  &kp DOWN      &kp RIGHT   &none  &none
-&mo 4     &none         &kp LC(Z)  &kp LC(Y)  &kp LC(S)        &kp C_VOL_DN            &kp C_VOLUME_UP  &kp K_PREV      &kp K_PP      &kp K_NEXT  &none  &to 5
+&mo 4     &altab        &kp LC(Z)  &kp LC(Y)  &kp LC(S)        &kp C_VOL_DN            &kp C_VOLUME_UP  &kp K_PREV      &kp K_PP      &kp K_NEXT  &none  &to 5
                                    &kp LGUI   &trans           &kp SPACE               &kp SPACE        &mo 3           &kp RALT
             >;
         };
