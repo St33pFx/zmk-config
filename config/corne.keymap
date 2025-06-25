@@ -86,10 +86,10 @@
 
             display-name = "Cole";
             bindings = <
-&kp TAB    &kp Q           &kp W        &kp F         &kp P      &kp B        &kp J       &kp L            &kp U       &kp Y    &kp SEMICOLON  &kp ESC
-&kp LSHFT  &kp A           &kp R        &kp S         &kp T      &kp G        &kp M       &kp N            &kp E       &kp I    &kp O          &kp MINUS
-&kp LCTRL  &mt LEFT_WIN Z  &mt LCTRL X  &kp C         &kp D      &kp V        &kp K       &kp H            &kp COMMA   &kp DOT  &kp FSLH       &mt RSHFT SLASH
-                                        &kp LEFT_ALT  &lt 1 TAB  &kp SPACE    &kp RETURN  &lt 2 BACKSPACE  &kp DELETE
+&kp TAB    &kp Q           &kp W        &kp F           &kp P      &kp B        &kp J       &kp L            &kp U       &kp Y    &kp SEMICOLON  &kp ESC
+&kp LSHFT  &kp A           &kp R        &kp S           &kp T      &kp G        &kp M       &kp N            &kp E       &kp I    &kp O          &kp MINUS
+&kp LCTRL  &mt LEFT_WIN Z  &mt LCTRL X  &kp C           &kp D      &kp V        &kp K       &kp H            &kp COMMA   &kp DOT  &kp FSLH       &mt RSHFT SLASH
+                                        &lt 1 LEFT_ALT  &lt 8 TAB  &kp SPACE    &kp RETURN  &lt 2 BACKSPACE  &kp DELETE
             >;
         };
 
@@ -160,7 +160,7 @@
 
         GAM1 {
             bindings = <
-&kp F14       &trans  &trans  &trans  &kp N4        &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&kp F14       &trans  &kp N1  &kp N2  &kp NUMBER_3  &trans    &trans  &trans  &trans  &trans  &trans  &trans
 &kp F13       &trans  &trans  &trans  &kp N5        &trans    &trans  &trans  &trans  &trans  &trans  &trans
 &kp LEFT_WIN  &trans  &trans  &trans  &kp NUMBER_6  &trans    &trans  &trans  &trans  &trans  &trans  &trans
                               &trans  &trans        &trans    &trans  &trans  &trans
@@ -169,11 +169,13 @@
 
         layer_8 {
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                        &trans  &trans  &trans    &trans  &trans  &trans
+&trans  &kp LC(N1)  &kp LC(N3)  &trans  &kp LC(H)  &kp LS(H)    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans      &trans      &trans  &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &kp LC(E)   &trans      &kp W   &kp E      &kp R        &trans  &trans  &trans  &trans  &trans  &trans
+                                &trans  &trans     &trans       &trans  &trans  &trans
             >;
+
+            label = "Maya";
         };
     };
 };
