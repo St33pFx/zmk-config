@@ -175,10 +175,10 @@
 
         Maya {
             bindings = <
-&trans  &kp LC(N1)  &kp LC(N3)  &trans  &kp LC(H)  &kp LS(H)    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans      &trans      &trans  &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &kp LC(E)   &trans      &kp W   &kp E      &kp R        &trans  &trans  &trans  &trans  &trans  &trans
-                                &trans  &trans     &trans       &trans  &trans  &trans
+&trans  &kp LC(N1)  &kp NUMBER_1  &kp N3  &kp LC(H)  &kp LS(H)    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans      &trans        &trans  &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &kp LC(E)   &trans        &kp W   &kp E      &kp R        &trans  &trans  &trans  &trans  &trans  &trans
+                                  &trans  &trans     &trans       &trans  &trans  &trans
             >;
 
             label = "Maya";
