@@ -94,10 +94,10 @@
 
             display-name = "Cole";
             bindings = <
-&kp TAB    &kp Q           &kp W        &kp F  &kp P      &kp B        &kp J        &kp L            &kp U       &kp Y    &kp SEMICOLON  &kp ESC
-&kp LSHFT  &kp A           &kp R        &kp S  &kp T      &kp G        &kp M        &kp N            &kp E       &kp I    &kp O          &kp MINUS
-&kp LCTRL  &mt LEFT_WIN Z  &mt LCTRL X  &kp C  &kp D      &kp V        &kp K        &kp H            &kp COMMA   &kp DOT  &kp FSLH       &mt RSHFT SLASH
-                                        &mo 1  &lt 7 TAB  &kp SPACE    &lt 3 ENTER  &lt 2 BACKSPACE  &kp DELETE
+&kp LEFT_ALT  &kp Q           &kp W        &kp F  &kp P      &kp B        &kp J        &kp L            &kp U       &kp Y    &kp SEMICOLON  &kp ESC
+&kp LSHFT     &kp A           &kp R        &kp S  &kp T      &kp G        &kp M        &kp N            &kp E       &kp I    &kp O          &kp MINUS
+&kp LCTRL     &mt LEFT_WIN Z  &mt LCTRL X  &kp C  &kp D      &kp V        &kp K        &kp H            &kp COMMA   &kp DOT  &kp FSLH       &mt RSHFT SLASH
+                                           &mo 1  &lt 7 TAB  &kp SPACE    &lt 3 ENTER  &lt 2 BACKSPACE  &kp DELETE
             >;
         };
 
