@@ -2,11 +2,10 @@ name: Build ZMK firmware
 
 on:
   push:
-  pull_request:
+    paths:
+      - "config/**"
   workflow_dispatch:
 
 jobs:
   build:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
-    with:
-      boards: corne_right nice_nano
