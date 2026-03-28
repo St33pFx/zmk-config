@@ -6,27 +6,17 @@
  * L1  NAV     — Flechas, Home/End/PgUp/PgDn, atajos edición
  * L2  SYM     — Símbolos programación
  * L3  NUM     — Numpad (der) + F-keys (izq)
- * L4  BLENDER — Shortcuts Blender
+ * L4  BLENDER — Shortcuts Blender (izq) + viewport numpad (der)
  * L5  AE      — Shortcuts After Effects
- * L6  SYS     — BT, RGB, System
+ * L6  SYS     — BT, RGB, System (condicional: NAV+SYM simultáneo)
  * L7  GAME    — QWERTY gaming sin HRM
- * L8  GNUM    — Números gaming
+ * L8  GNUM    — Números gaming (Valorant/Minecraft hotbar)
  *
- * Thumbs:
- *   lt(NUM,LGUI)  SPACE(puro)  lt(SYM,TAB)
- *   lt(SYM,ENT)   lt(NAV,DEL)  RALT
- *
- * TAB = tap TAB / hold BSPC  ← borrar con mano izq (meñique)
- * Space = kp puro, sin delay
- * NAV = lt en thumb mid-der (DEL)
- * Ctrl+S en NAV layer posición cómoda mano izq
- *
- * Combos:
- *   W+F     → ESC
- *   S+T     → TAB
- *   LSft+RSft → Caps Word
- *   Q+P     → SYS (intencional, difícil accidental)
- *   LSft+RSft → salir GAME
+ * Combos:  W+F → ESC  |  S+T → TAB  |  Shift+Shift → Caps Word  |  Q+P → SYS
+ * Thumbs:  NUM/⌘  SPC(puro)  SYM/TAB  ||  SYM/ENT  NAV/DEL  RALT
+ * TAB:     tap=TAB  hold=BSPC  (borrar con mano izquierda)
+ * SYS:     Q+P combo  O  NAV+SYM simultáneo
+ * EXIT GAME: LSft+RSft combo  O  hold RALT → SYS → GAM
  */
 
 #include <behaviors.dtsi>
@@ -36,6 +26,7 @@
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/ext_power.h>
 
+/* ── Índices de capas ───────────────────────────────────────── */
 #define COLE  0
 #define NAV   1
 #define SYM   2
@@ -60,7 +51,7 @@
 #define THUMBS 36 37 38 39 40 41
 
 / {
-    /* ── Capa condicional: NAV + SYM → SYS ─────────────── */
+    /* ── Capa condicional: NAV + SYM → SYS ───────────────── */
     conditional_layers {
         compatible = "zmk,conditional-layers";
         tri_sys {
@@ -69,6 +60,7 @@
         };
     };
 
+    /* ── Combos ───────────────────────────────────────────── */
     combos {
         compatible = "zmk,combos";
 
@@ -96,7 +88,7 @@
             layers = <COLE>;
         };
 
-        /* Q(1) + P(4) → SYS */
+        /* Q(1) + P(4) → SYS directo — fácil intencional, difícil accidental */
         combo_sys {
             timeout-ms = <60>;
             key-positions = <1 4>;
@@ -104,7 +96,7 @@
             layers = <COLE>;
         };
 
-        /* Salir GAME: LSHFT(24) + RSHFT(35) */
+        /* Salir de GAME: LSft(24) + RSft(35) simultáneo */
         combo_exit_game {
             timeout-ms = <60>;
             key-positions = <24 35>;
@@ -113,12 +105,14 @@
         };
     };
 
+    /* ── Comportamientos ──────────────────────────────────── */
     behaviors {
         /*
-         * tab_bspc: tap = TAB, hold = BSPC
-         * Permite borrar con mano izquierda (meñique).
-         * tapping-term 200ms — corto para que no sienta lento al tabular
-         * quick-tap: doble tap rápido = TAB repetido, no BSPC
+         * tab_bspc: tap=TAB  hold=BSPC
+         * Permite borrar con mano izquierda (meñique) sin mover
+         * la mano derecha del mouse.
+         * tap-preferred: al tipear normal nunca activa BSPC accidentalmente.
+         * quick-tap: doble tap rápido = TAB repetido, nunca BSPC.
          */
         tab_bspc: tab_bspc {
             compatible = "zmk,behavior-hold-tap";
@@ -129,7 +123,11 @@
             bindings = <&kp>, <&kp>;
         };
 
-        /* HRM izquierda */
+        /*
+         * HRM izquierda — solo se activa como modifier si la
+         * siguiente tecla presionada está en la mano DERECHA o pulgares.
+         * Evita falsos modifiers al tipear rápido (ej: "rst" → no Ctrl).
+         */
         hml: hml {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -142,7 +140,10 @@
             hold-trigger-on-release;
         };
 
-        /* HRM derecha */
+        /*
+         * HRM derecha — solo activa modifier si siguiente tecla
+         * está en mano IZQUIERDA o pulgares.
+         */
         hmr: hmr {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -162,16 +163,16 @@
         /* ═══════════════════════════════════════════════════
          * L0 — COLE   Colemak DH + positional HRM
          *
-         * TAB/BSPC  Q    W    F    P    B  │  J    L    U    Y   SEMI BSPC
-         * ESC      A⌘   R⌥   S⌃   T⇧   G  │  M   N⇧   E⌃   I⌥  O⌘   SQT
-         * LSft      Z    X    C    D    V  │  K    H    ,    .    /   RSft
-         *        NUM/⌘  SPC  SYM/TAB  │  SYM/ENT  NAV/DEL  RALT
+         * T/B   Q    W    F    P    B  │  J    L    U    Y   SEMI BSPC
+         * ESC  A⌘   R⌥   S⌃   T⇧   G  │  M   N⇧   E⌃   I⌥  O⌘   SQT
+         * LSft  Z    X    C    D    V  │  K    H    ,    .    /   RSft
+         *         NUM/⌘  SPC  SYM/TAB  │  SYM/ENT  NAV/DEL  ⌥
          *
-         * TAB: tap=TAB  hold=BSPC  (meñique izq, borrar con 1 mano)
-         * Space: kp puro, sin delay
-         * NAV/DEL: tap=DEL  hold=NAV  (thumb mid-der)
-         * HRM izq: A=LGUI R=LALT S=LCTRL T=LSHFT
-         * HRM der: N=RSHFT E=RCTRL I=RALT O=RGUI
+         * T/B = tap TAB / hold BSPC (meñique izq — borrar con 1 mano)
+         * Space = kp puro, sin layer-tap, sin delay
+         * NAV/DEL = tap DEL / hold NAV (thumb mid-der)
+         * HRM mano izq: A=LGUI R=LALT S=LCTRL T=LSHFT
+         * HRM mano der: N=RSHFT E=RCTRL I=RALT O=RGUI
          * ═══════════════════════════════════════════════════ */
         cole_layer {
             bindings = <
@@ -183,16 +184,17 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L1 — NAV   Navegación + atajos edición
+         * L1 — NAV   Navegación + atajos de edición
          *
-         * ___   ___  ___  ___  ___  ___  │ PGUP HOME  ↑   END  DEL  ___
-         * ___    ⌘    ⌥    ⌃    ⇧   ___  │ PGDN  ←    ↓    →  BSPC ___
-         * ___   C-Z  C-X  C-S  C-V  C-Y  │  INS  ___  ___  ___  ___  ___
-         *             ___  ___  ___       │  ENT  [NAV] ___
+         * ___  ___  ___  ___  ___  ___  │ PGUP HOME  ↑   END  DEL  ___
+         * ___   ⌘    ⌥    ⌃    ⇧   ___  │ PGDN  ←    ↓    →  BSPC ___
+         * ___  C-Z  C-X  C-S  C-V  C-Y  │  INS  ___  ___  ___  ___  ___
+         *            ___  ___  ___       │  ENT [NAV]  ___
          *
-         * Ctrl+S en posición C (fila inferior izq col3) — muy cómodo mano izq
-         * Flechas en home row derecha para navegación con mano der
-         * Modificadores en home row izq para combinar con flechas
+         * C-S en posición col3 fila inf (donde estaba C) → Ctrl+S mano izq sola
+         * C-X reemplazó C-C porque C-C está en col3 fila sup accesible normal
+         * Modificadores en home row izq para combinar con flechas der
+         * Mantener NAV + SYM → activa SYS (conditional layer)
          * ═══════════════════════════════════════════════════ */
         nav_layer {
             bindings = <
@@ -204,12 +206,15 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L2 — SYM   Símbolos programación
+         * L2 — SYM   Símbolos para programación
          *
          *  `    !    @    #    $    %   │  ^    &    *    (    )   BSPC
          *  ~    {    }    (    )    |   │  \    -    =    [    ]    ;
          * ___   <    >    [    ]    /   │  _    +    :    '    "   ___
-         *             ___  [SYS]  ___   │  [SYM]  ___  ___
+         *            ___  [SYS]  ___    │  [SYM]  ___  ___
+         *
+         * Pares de brackets juntos en misma columna para fácil acceso
+         * { } en home row izq | [ ] en fila inf izq | ( ) duplicados
          * ═══════════════════════════════════════════════════ */
         sym_layer {
             bindings = <
@@ -226,7 +231,11 @@
          * ___   F1   F2   F3   F4   F5  │   /    7    8    9    -   BSPC
          * ___   F6   F7   F8   F9  F10  │   *    4    5    6    +    =
          * ___  F11  F12   ___  ___  ___  │   0    1    2    3    .   ENT
-         *             [NUM]  ___  ___    │  ___  ___  ___
+         *            [NUM]  ___  ___     │  ___  ___  ___
+         *
+         * Acceso: mantener pulgar outer izq (NUM/LGUI)
+         * Numpad layout estándar: 7-8-9 / 4-5-6 / 1-2-3 / 0
+         * KP_SUBTRACT en lugar de KP_MINUS (nombre correcto en ZMK)
          * ═══════════════════════════════════════════════════ */
         num_layer {
             bindings = <
@@ -245,8 +254,16 @@
          * ___   ___  ___  ___  ___  ___  │  ___  ___  ___  ___  ___  ___
          *           [SYS]  ___  ___      │  ___  ___  [SYS]
          *
-         * Izq: shortcuts modo objeto/edición
-         * Der top: vistas numpad (NP7=top NP1=front NP5=persp NP3=side NP0=cam NP.=focus)
+         * Acceso: toggle desde SYS layer (tecla BLEN)
+         * Izquierda: shortcuts modo objeto/edición
+         *   Col0: Ctrl+Tab (pie menu modos), Ctrl+Z (deshacer)
+         *   Col1: G(grab/mover), A(select all)
+         *   Col2: R(rotate), H(hide)
+         *   Col3: S(scale), Alt+H(unhide)
+         *   Col4: E(extrude), Ctrl+R(loop cut)
+         *   Col5: Tab(toggle edit mode), X(delete)
+         * Derecha top: vistas numpad
+         *   NP7=top  NP1=front  NP5=perspectiva  NP3=side  NP0=cámara  NP.=focus
          * ═══════════════════════════════════════════════════ */
         blender_layer {
             bindings = <
@@ -265,9 +282,17 @@
          * ___   ___  ___  ___  ___  ___  │  _  C+A+S+H C+A+A ___  ___  ___
          *           [SYS]  ___  ___      │  ___  ___  [SYS]
          *
-         * U=kf modificados | P=posición | S=escala | R=rotación | T=opacidad
-         * J/K=kf anterior/siguiente | Ctrl+D=duplicar | `=maximizar panel
-         * NP0=RAM preview | NP.=1 frame | B/N=work area in/out | F9=easy ease
+         * Acceso: toggle desde SYS layer (tecla AE)
+         * Izquierda:
+         *   U=mostrar kf modificados | P=posición | S=escala
+         *   R=rotación | T=opacidad | J/K=kf anterior/siguiente
+         *   Ctrl+D=duplicar | `=maximizar panel | SPC=play/pause
+         * Derecha:
+         *   NP0=RAM preview | NP.=preview 1 frame | [=in point | ]=out point
+         *   B=inicio work area | N=fin work area | F9=easy ease
+         *   Ctrl+Shift+D=split layer en CTI
+         *   Ctrl+Alt+Shift+Home=centrar en comp
+         *   Ctrl+Alt+A=seleccionar todos los keyframes
          * ═══════════════════════════════════════════════════ */
         ae_layer {
             bindings = <
@@ -279,34 +304,42 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L6 — SYS   Sistema
+         * L6 — SYS   Sistema (BT, RGB, toggles de capas)
          *
          * ___   RST  ___  ___  ___  ___  │  ___  ___  ___  ___  ___  ___
          * ___   BT0  BT1  BT2  BT3  BT4  │  ___  BLEN  AE  ___  GAM  ___
          * ___  BTCL OUT  EXT  ___  ___   │  HUI  HUD  SAI  SAD  EFF  TOG
          *            ___  [SYS]  ___      │  ___  [SYS]  ___
          *
-         * Acceso: Q+P combo  O  NAV+SYM simultáneo
+         * Acceso: Q+P combo  O  NAV+SYM simultáneo (conditional layer)
          * &bootloader removido — usa doble-click reset físico para flashear
+         * BLEN=toggle Blender layer | AE=toggle AE layer
+         * GAM=toggle Gaming         | BTCL=limpiar perfil BT actual
+         * OUT=toggle USB/BLE        | EXT=toggle external power (OLEDs)
+         * RGB: HUI/HUD=hue+/- | SAI/SAD=sat+/- | EFF=next efecto | TOG=on/off
          * ═══════════════════════════════════════════════════ */
         sys_layer {
             bindings = <
-&trans  &sys_reset    &trans        &trans        &trans        &trans         &trans           &trans          &trans           &trans           &trans          &trans
-&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4   &trans           &tog BLEN       &tog AE          &trans           &tog GAME       &trans
-&trans  &bt BT_CLR    &out OUT_TOG  &ext_power EP_TOG &trans    &trans          &rgb_ug RGB_HUI  &rgb_ug RGB_HUD &rgb_ug RGB_SAI  &rgb_ug RGB_SAD  &rgb_ug RGB_EFF &rgb_ug RGB_TOG
-                                    &trans        &trans        &trans          &trans           &trans          &trans
+&trans  &sys_reset    &trans        &trans            &trans        &trans         &trans           &trans          &trans           &trans           &trans          &trans
+&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2      &bt BT_SEL 3  &bt BT_SEL 4   &trans           &tog BLEN       &tog AE          &trans           &tog GAME       &trans
+&trans  &bt BT_CLR    &out OUT_TOG  &ext_power EP_TOG &trans        &trans          &rgb_ug RGB_HUI  &rgb_ug RGB_HUD &rgb_ug RGB_SAI  &rgb_ug RGB_SAD  &rgb_ug RGB_EFF &rgb_ug RGB_TOG
+                                    &trans            &trans        &trans          &trans           &trans          &trans
             >;
         };
 
         /* ═══════════════════════════════════════════════════
-         * L7 — GAME   QWERTY gaming sin HRM
+         * L7 — GAME   QWERTY gaming (sin HRM)
          *
          * ESC   1    2    3    4    5   │  6    7    8    9    0   BSPC
          * TAB   Q    W    E    R    T   │  Y    U    I    O    P   ENT
          * SHFT  A    S    D    F    G   │  H    J    K    L    ;   SQT
-         *          CTRL  GNUM  SPC     │  ENT  ___  SYS/RALT
+         *           CTRL  GNUM  SPC    │  ENT  ___  SYS/RALT
          *
-         * Salir: LSHFT+RSHFT combo  O  hold RALT → SYS → GAM
+         * Acceso: toggle desde SYS layer (tecla GAM)
+         * Salir:  LSft(24)+RSft(35) combo simultáneo
+         *         O: hold RALT der → SYS activo → tecla GAM (donde está &tog GAME)
+         * GNUM:   hold pulgar mid-izq → números y F-keys mano izq
+         * Sin HRM — todos los modificadores son físicos y directos
          * ═══════════════════════════════════════════════════ */
         game_layer {
             bindings = <
@@ -318,16 +351,19 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L8 — GNUM   Números gaming
+         * L8 — GNUM   Números gaming (Valorant/Minecraft hotbar)
          *
          * F1   F2   F3   F4   F5   ___  │  ___  ___  ___  ___  ___  ___
          *  1    2    3    4    5   ___   │  ___  ___  ___  ___  ___  ___
          *  6    7    8    9    0   ___   │   B    M    I   TAB  ___  ___
          *           ___  [GNUM]  ENT    │  ___  ___  ___
          *
-         * 1-5 = armas Valorant / hotbar Minecraft 1-5
-         * F1-F5 = habilidades / comandos
-         * B=comprar(Val)/cama(MC) M=mapa I=inventario TAB=scoreboard
+         * Acceso: hold pulgar mid-izq en GAME layer
+         * Mano izquierda sola maneja todos los números — mano der se queda en mouse
+         * Fila sup: F1-F5 (habilidades Valorant / comandos)
+         * Home row: 1-5 (armas Valorant / hotbar Minecraft 1-5)
+         * Fila inf izq: 6-0 (hotbar Minecraft 6-9, 0)
+         * Fila inf der: B=comprar(Val)/cama(MC) | M=mapa | I=inventario | TAB=scoreboard
          * ═══════════════════════════════════════════════════ */
         gamnums_layer {
             bindings = <
