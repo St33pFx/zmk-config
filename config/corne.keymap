@@ -19,13 +19,14 @@
  */
 
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
-#include <dt-bindings/zmk/rgb.h>
-#include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/ext_power.h>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/rgb.h>
 
 /* ── Índices de capas ───────────────────────────────────────── */
+
 #define COLE  0
 #define NAV   1
 #define SYM   2
@@ -45,14 +46,17 @@
  *  │              36  37  38         │ 39  40  41                      │
  *  └─────────────────────────────────┴─────────────────────────────────┘
  */
+
 #define KEYS_L  0  1  2  3  4  5  12 13 14 15 16 17  24 25 26 27 28 29
 #define KEYS_R  6  7  8  9 10 11  18 19 20 21 22 23  30 31 32 33 34 35
 #define THUMBS 36 37 38 39 40 41
 
 / {
     /* ── Capa condicional: NAV + SYM → SYS ───────────────── */
+
     conditional_layers {
         compatible = "zmk,conditional-layers";
+
         tri_sys {
             if-layers = <NAV SYM>;
             then-layer = <SYS>;
@@ -60,31 +64,39 @@
     };
 
     /* ── Combos ───────────────────────────────────────────── */
+
     combos {
         compatible = "zmk,combos";
 
         /* W(2) + F(3) → ESC */
+
         combo_esc {
             timeout-ms = <50>;
             key-positions = <2 3>;
             bindings = <&kp ESC>;
             layers = <COLE>;
         };
+
         /* S(15) + T(16) → TAB */
+
         combo_tab {
             timeout-ms = <50>;
             key-positions = <15 16>;
             bindings = <&kp TAB>;
             layers = <COLE>;
         };
+
         /* LSHFT(24) + RSHFT(35) → Caps Word */
+
         combo_caps_word {
             timeout-ms = <60>;
             key-positions = <24 35>;
             bindings = <&caps_word>;
             layers = <COLE>;
         };
+
         /* Salir de GAME: Shift(24) + Shift(35) también funciona en GAME */
+
         combo_exit_game {
             timeout-ms = <60>;
             key-positions = <24 35>;
@@ -94,12 +106,14 @@
     };
 
     /* ── Comportamientos ──────────────────────────────────── */
+
     behaviors {
         /*
          * HRM izquierda — solo se activa como modifier si la
          * siguiente tecla presionada está en la mano DERECHA o pulgares.
          * Evita falsos modifiers al tipear rápido (ej: "rst" → no Ctrl).
          */
+
         hml: hml {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -108,13 +122,16 @@
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&kp>, <&kp>;
+
             hold-trigger-key-positions = <KEYS_R THUMBS>;
             hold-trigger-on-release;
         };
+
         /*
          * HRM derecha — solo activa modifier si siguiente tecla
          * está en mano IZQUIERDA o pulgares.
          */
+
         hmr: hmr {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -123,6 +140,7 @@
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&kp>, <&kp>;
+
             hold-trigger-key-positions = <KEYS_L THUMBS>;
             hold-trigger-on-release;
         };
@@ -142,12 +160,13 @@
          * HRM mano izq: A=LGUI R=LALT S=LCTRL T=LSHFT
          * HRM mano der: N=RSHFT E=RCTRL I=RALT O=RGUI
          * ═══════════════════════════════════════════════════ */
+
         cole_layer {
             bindings = <
-    &kp TAB      &kp Q          &kp W         &kp F          &kp P          &kp B          &kp J       &kp L          &kp U          &kp Y         &kp SEMI       &kp BSPC
-    &kp ESC      &hml LGUI A    &hml LALT R   &hml LCTRL S   &hml LSHFT T   &kp G          &kp M       &hmr RSHFT N   &hmr RCTRL E   &hmr RALT I   &hmr RGUI O    &kp SQT
-    &kp LSHFT    &kp Z          &kp X         &kp C          &kp D          &kp V          &kp K       &kp H          &kp COMMA      &kp DOT       &kp FSLH       &kp RSHFT
-                                              &lt NUM LGUI   &lt NAV SPACE  &lt SYM TAB    &lt SYM RET &lt NAV BSPC   &kp RALT
+&kp TAB    &kp Q        &kp W        &kp F         &kp P          &kp B          &kp J        &kp L         &kp U         &kp Y        &kp SEMI     &kp BSPC
+&kp ESC    &hml LGUI A  &hml LALT R  &hml LCTRL S  &hml LSHFT T   &kp G          &kp M        &hmr RSHFT N  &hmr RCTRL E  &hmr RALT I  &hmr RGUI O  &kp SQT
+&kp LSHFT  &kp Z        &kp X        &kp C         &kp D          &kp V          &kp K        &kp H         &kp COMMA     &kp DOT      &kp FSLH     &kp RSHFT
+                                     &lt NUM LGUI  &lt NAV SPACE  &lt SYM TAB    &lt SYM RET  &lt NAV BSPC  &kp RALT
             >;
         };
 
@@ -161,12 +180,13 @@
          *
          * Mantener NAV + SYM → activa SYS (conditional layer)
          * ═══════════════════════════════════════════════════ */
+
         nav_layer {
             bindings = <
-    &trans    &trans       &trans       &trans       &trans       &trans       &kp PG_UP  &kp HOME    &kp UP      &kp END      &kp DEL     &trans
-    &trans    &kp LGUI     &kp LALT     &kp LCTRL    &kp LSHFT    &trans       &kp PG_DN  &kp LEFT    &kp DOWN    &kp RIGHT    &kp BSPC    &trans
-    &trans    &kp LC(Z)    &kp LC(X)    &kp LC(C)    &kp LC(V)    &kp LC(Y)    &kp INS    &trans      &trans      &trans       &trans      &trans
-                                        &trans       &trans       &trans       &kp RET    &trans      &trans
+&trans  &trans     &trans     &trans     &trans     &trans       &kp PG_UP  &kp HOME  &kp UP    &kp END    &kp DEL   &trans
+&trans  &kp LGUI   &kp LALT   &kp LCTRL  &kp LSHFT  &kp LC(S)    &kp PG_DN  &kp LEFT  &kp DOWN  &kp RIGHT  &kp BSPC  &trans
+&trans  &kp LC(Z)  &kp LC(X)  &kp LC(C)  &kp LC(V)  &kp LC(Y)    &kp INS    &trans    &trans    &trans     &trans    &trans
+                              &trans     &trans     &trans       &kp RET    &trans    &trans
             >;
         };
 
@@ -178,12 +198,13 @@
          * ___   <    >    [    ]    /   │  _    +    :    '    "   ___
          *            ___  [SYS] ___     │  [SYM] ___  ___
          * ═══════════════════════════════════════════════════ */
+
         sym_layer {
             bindings = <
-    &kp GRAVE  &kp EXCL   &kp AT    &kp HASH   &kp DLLR   &kp PRCNT    &kp CARET  &kp AMPS   &kp ASTRK  &kp LPAR   &kp RPAR   &kp BSPC
-    &kp TILDE  &kp LBRC   &kp RBRC  &kp LPAR   &kp RPAR   &kp PIPE     &kp BSLH   &kp MINUS  &kp EQUAL  &kp LBKT   &kp RBKT   &kp SEMI
-    &trans     &kp LT     &kp GT    &kp LBKT   &kp RBKT   &kp FSLH     &kp UNDER  &kp PLUS   &kp COLON  &kp SQT    &kp DQT    &trans
-                                    &trans     &trans     &trans        &trans     &trans     &trans
+&kp GRAVE  &kp EXCL  &kp AT    &kp HASH  &kp DLLR  &kp PRCNT    &kp CARET  &kp AMPS   &kp ASTRK  &kp LPAR  &kp RPAR  &kp BSPC
+&kp TILDE  &kp LBRC  &kp RBRC  &kp LPAR  &kp RPAR  &kp PIPE     &kp BSLH   &kp MINUS  &kp EQUAL  &kp LBKT  &kp RBKT  &kp SEMI
+&trans     &kp LT    &kp GT    &kp LBKT  &kp RBKT  &kp FSLH     &kp UNDER  &kp PLUS   &kp COLON  &kp SQT   &kp DQT   &trans
+                               &trans    &trans    &trans       &trans     &trans     &trans
             >;
         };
 
@@ -197,12 +218,13 @@
          *
          * Acceso: mantener pulgar izq externo (NUM/LGUI)
          * ═══════════════════════════════════════════════════ */
+
         num_layer {
             bindings = <
-    &trans    &kp F1    &kp F2    &kp F3    &kp F4    &kp F5       &kp KP_DIVIDE   &kp N7  &kp N8  &kp N9  &kp KP_MINUS  &kp BSPC
-    &trans    &kp F6    &kp F7    &kp F8    &kp F9    &kp F10      &kp KP_MULTIPLY &kp N4  &kp N5  &kp N6  &kp KP_PLUS   &kp EQUAL
-    &trans    &kp F11   &kp F12   &trans    &trans    &trans        &kp N0        &kp N1  &kp N2  &kp N3  &kp DOT       &kp RET
-                                  &trans    &trans    &trans        &trans        &trans  &trans
+&trans  &kp F1   &kp F2   &kp F3  &kp F4  &kp F5     &kp KP_DIVIDE    &kp N7  &kp N8  &kp N9  &kp KP_MINUS  &kp BSPC
+&trans  &kp F6   &kp F7   &kp F8  &kp F9  &kp F10    &kp KP_MULTIPLY  &kp N4  &kp N5  &kp N6  &kp KP_PLUS   &kp EQUAL
+&trans  &kp F11  &kp F12  &trans  &trans  &trans     &kp N0           &kp N1  &kp N2  &kp N3  &kp DOT       &kp RET
+                          &trans  &trans  &trans     &trans           &trans  &trans
             >;
         };
 
@@ -224,12 +246,13 @@
          *   Col5: Tab(edit toggle), X(delete)
          * Derecha top: NP7=top NP1=front NP5=persp NP3=side NP0=cam NP.=focus
          * ═══════════════════════════════════════════════════ */
+
         blender_layer {
             bindings = <
-    &kp LC(TAB)  &kp G    &kp R    &kp S       &kp E        &kp TAB      &kp KP_N7  &kp KP_N1  &kp KP_N5  &kp KP_N3  &kp KP_N0  &kp KP_DOT
-    &kp LC(Z)    &kp A    &kp H    &kp LA(H)   &kp LC(R)    &kp X        &trans     &trans     &trans     &trans     &trans     &trans
-    &trans       &trans   &trans   &trans      &trans       &trans        &trans     &trans     &trans     &trans     &trans     &trans
-                                   &mo SYS     &trans       &trans        &trans     &trans     &mo SYS
+&kp LC(TAB)  &kp G   &kp R   &kp S      &kp E      &kp TAB    &kp KP_N7  &kp KP_N1  &kp KP_N5  &kp KP_N3  &kp KP_N0  &kp KP_DOT
+&kp LC(Z)    &kp A   &kp H   &kp LA(H)  &kp LC(R)  &kp X      &trans     &trans     &trans     &trans     &trans     &trans
+&trans       &trans  &trans  &trans     &trans     &trans     &trans     &trans     &trans     &trans     &trans     &trans
+                             &mo SYS    &trans     &trans     &trans     &trans     &mo SYS
             >;
         };
 
@@ -251,12 +274,13 @@
          *   Ctrl+Shift+D=split layer | Ctrl+Alt+Shift+Home=centrar
          *   Ctrl+Alt+A=seleccionar todos los keyframes
          * ═══════════════════════════════════════════════════ */
+
         ae_layer {
             bindings = <
-    &kp LC(Z)  &kp U    &kp P    &kp S       &kp R       &kp T         &kp KP_N0  &kp KP_DOT      &kp LBKT           &kp RBKT  &kp B   &kp N
-    &kp LC(S)  &kp J    &kp K    &kp LC(D)   &kp GRAVE   &kp SPACE     &kp F9     &kp LC(LS(D))   &trans             &trans    &trans  &trans
-    &trans     &trans   &trans   &trans      &trans      &trans         &trans     &kp LC(LA(LS(HOME))) &kp LC(LA(A)) &trans    &trans  &trans
-                                 &mo SYS     &trans      &trans         &trans     &trans          &mo SYS
+&kp LC(Z)  &kp U   &kp P   &kp S      &kp R      &kp T        &kp KP_N0  &kp KP_DOT            &kp LBKT       &kp RBKT  &kp B   &kp N
+&kp LC(S)  &kp J   &kp K   &kp LC(D)  &kp GRAVE  &kp SPACE    &kp F9     &kp LC(LS(D))         &trans         &trans    &trans  &trans
+&trans     &trans  &trans  &trans     &trans     &trans       &trans     &kp LC(LA(LS(HOME)))  &kp LC(LA(A))  &trans    &trans  &trans
+                           &mo SYS    &trans     &trans       &trans     &trans                &mo SYS
             >;
         };
 
@@ -274,12 +298,13 @@
          * OUT=toggle USB/BLE  | EXT=toggle external power
          * RGB: HUI/HUD=hue+/- | SAI/SAD=sat+/- | EFF=efecto | TOG=on/off
          * ═══════════════════════════════════════════════════ */
+
         sys_layer {
             bindings = <
-    &bootloader  &trans        &trans        &trans        &trans        &trans          &trans           &trans          &trans           &trans           &trans          &trans
-    &sys_reset   &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &trans           &tog BLEN       &tog AE          &trans           &tog GAME       &trans
-    &trans       &bt BT_CLR    &out OUT_TOG  &ext_power EP_TOG &trans    &trans           &rgb_ug RGB_HUI  &rgb_ug RGB_HUD &rgb_ug RGB_SAI  &rgb_ug RGB_SAD  &rgb_ug RGB_EFF &rgb_ug RGB_TOG
-                                             &trans        &trans        &trans           &trans           &trans          &trans
+&bootloader  &trans        &trans        &trans             &trans        &trans          &trans           &trans           &trans           &trans           &trans           &trans
+&sys_reset   &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2       &bt BT_SEL 3  &bt BT_SEL 4    &trans           &tog BLEN        &tog AE          &trans           &tog GAME        &trans
+&trans       &bt BT_CLR    &out OUT_TOG  &ext_power EP_TOG  &trans        &trans          &rgb_ug RGB_HUI  &rgb_ug RGB_HUD  &rgb_ug RGB_SAI  &rgb_ug RGB_SAD  &rgb_ug RGB_EFF  &rgb_ug RGB_TOG
+                                         &trans             &trans        &trans          &trans           &trans           &trans
             >;
         };
 
@@ -296,12 +321,13 @@
          *         O: mantener RALT der → SYS → P (donde está &tog GAME)
          * GNUM:   mantener pulgar medio izq → números/F-keys
          * ═══════════════════════════════════════════════════ */
+
         game_layer {
             bindings = <
-    &kp ESC    &kp N1   &kp N2   &kp N3     &kp N4       &kp N5       &kp N6   &kp N7   &kp N8   &kp N9   &kp N0    &kp BSPC
-    &kp TAB    &kp Q    &kp W    &kp E      &kp R        &kp T        &kp Y    &kp U    &kp I    &kp O    &kp P     &kp RET
-    &kp LSHFT  &kp A    &kp S    &kp D      &kp F        &kp G        &kp H    &kp J    &kp K    &kp L    &kp SEMI  &kp SQT
-                                 &kp LCTRL  &mo GNUM     &kp SPACE    &kp RET  &trans   &lt SYS RALT
+&kp ESC    &kp N1  &kp N2  &kp N3     &kp N4    &kp N5       &kp N6   &kp N7  &kp N8        &kp N9  &kp N0    &kp BSPC
+&kp TAB    &kp Q   &kp W   &kp E      &kp R     &kp T        &kp Y    &kp U   &kp I         &kp O   &kp P     &kp RET
+&kp LSHFT  &kp A   &kp S   &kp D      &kp F     &kp G        &kp H    &kp J   &kp K         &kp L   &kp SEMI  &kp SQT
+                           &kp LCTRL  &mo GNUM  &kp SPACE    &kp RET  &trans  &lt SYS RALT
             >;
         };
 
@@ -319,12 +345,13 @@
          * Bottom row izq: 6-0 (hotbar 6-9,0 Minecraft)
          * Bottom row der: B=comprar(Val)/cama(MC) M=mapa I=inventario TAB=scoreboard
          * ═══════════════════════════════════════════════════ */
+
         gamnums_layer {
             bindings = <
-    &kp F1   &kp F2   &kp F3   &kp F4   &kp F5   &trans       &trans   &trans   &trans   &trans   &trans   &trans
-    &kp N1   &kp N2   &kp N3   &kp N4   &kp N5   &trans       &trans   &trans   &trans   &trans   &trans   &trans
-    &kp N6   &kp N7   &kp N8   &kp N9   &kp N0   &trans       &kp B    &kp M    &kp I    &kp TAB  &trans   &trans
-                               &trans   &trans   &kp RET      &trans   &trans   &trans
+&kp F1  &kp F2  &kp F3  &kp F4  &kp F5  &trans     &trans  &trans  &trans  &trans   &trans  &trans
+&kp N1  &kp N2  &kp N3  &kp N4  &kp N5  &trans     &trans  &trans  &trans  &trans   &trans  &trans
+&kp N6  &kp N7  &kp N8  &kp N9  &kp N0  &trans     &kp B   &kp M   &kp I   &kp TAB  &trans  &trans
+                        &trans  &trans  &kp RET    &trans  &trans  &trans
             >;
         };
     };
