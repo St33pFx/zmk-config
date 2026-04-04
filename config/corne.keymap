@@ -52,6 +52,14 @@
 #define KEYS_R  6  7  8  9 10 11  18 19 20 21 22 23  30 31 32 33 34 35
 #define THUMBS 36 37 38 39 40 41
 
+/* ── LED chain-length ───────────────────────────────────────── */
+/* 21 per-key (SK6812MINI-E) + 6 underglow (WS2812B) = 27 por lado */
+/* Default de ZMK es 10 — sin esto los per-key nunca encienden     */
+
+&led_strip {
+    chain-length = <27>;
+};
+
 / {
     /* ── Capa condicional: NAV + SYM → SYS ───────────────── */
 
@@ -219,9 +227,9 @@
         /* ═══════════════════════════════════════════════════
          * L1 — NAV   Navegación + atajos de edición
          *
-         * ___  ___  ___  ___  ___  ___  │ PGUP HOME  ↑   END  DEL  ___
-         * ___   ⌘    ⌥    ⌃    ⇧   ___  │ PGDN  ←    ↓    →  BSPC ___
-         * ___  C-Z  C-X  C-S  C-V  C-Y  │  INS  ___  ___  ___  ___  ___
+         * ___  ___  ___  PrtSc ___  ___  │ PGUP HOME  ↑   END  DEL  ___
+         * ___   ⌘    ⌥    ⌃    ⇧  C-S   │ PGDN  ←    ↓    →  BSPC ___
+         * ___  C-Z  C-X  C-C  C-V  C-Y  │  INS  ___  ___  ___  ___  ___
          *            ___  ___  ___       │  ENT [NAV]  ___
          *
          * C-S en posición col3 fila inf (donde estaba C) → Ctrl+S mano izq sola
@@ -318,18 +326,6 @@
          * C+S    J    K   C+D   `   SPC  │  F9  C+S+D  ___  ___  ___  ___
          * ___   ___  ___  ___  ___  ___  │  _  C+A+S+H C+A+A ___  ___  ___
          *           [SYS]  ___  ___      │  ___  ___  [SYS]
-         *
-         * Acceso: toggle desde SYS layer (tecla AE)
-         * Izquierda:
-         *   U=mostrar kf modificados | P=posición | S=escala
-         *   R=rotación | T=opacidad | J/K=kf anterior/siguiente
-         *   Ctrl+D=duplicar | `=maximizar panel | SPC=play/pause
-         * Derecha:
-         *   NP0=RAM preview | NP.=preview 1 frame | [=in point | ]=out point
-         *   B=inicio work area | N=fin work area | F9=easy ease
-         *   Ctrl+Shift+D=split layer en CTI
-         *   Ctrl+Alt+Shift+Home=centrar en comp
-         *   Ctrl+Alt+A=seleccionar todos los keyframes
          * ═══════════════════════════════════════════════════ */
 
         ae_layer {
@@ -343,18 +339,6 @@
 
         /* ═══════════════════════════════════════════════════
          * L6 — SYS   Sistema (BT, RGB, toggles de capas)
-         *
-         * ___   RST  ___  ___  ___  ___  │  ___  ___  ___  ___  ___  ___
-         * ___   BT0  BT1  BT2  BT3  BT4  │  ___  BLEN  AE  ___  GAM  ___
-         * ___  BTCL OUT  EXT  ___  ___   │  HUI  HUD  SAI  SAD  EFF  TOG
-         *            ___  [SYS]  ___      │  ___  [SYS]  ___
-         *
-         * Acceso: Q+P combo  O  NAV+SYM simultáneo (conditional layer)
-         * &bootloader removido — usa doble-click reset físico para flashear
-         * BLEN=toggle Blender layer | AE=toggle AE layer
-         * GAM=toggle Gaming         | BTCL=limpiar perfil BT actual
-         * OUT=toggle USB/BLE        | EXT=toggle external power (OLEDs)
-         * RGB: HUI/HUD=hue+/- | SAI/SAD=sat+/- | EFF=next efecto | TOG=on/off
          * ═══════════════════════════════════════════════════ */
 
         sys_layer {
@@ -368,17 +352,6 @@
 
         /* ═══════════════════════════════════════════════════
          * L7 — GAME   QWERTY gaming (sin HRM)
-         *
-         * ESC   1    2    3    4    5   │  6    7    8    9    0   BSPC
-         * TAB   Q    W    E    R    T   │  Y    U    I    O    P   ENT
-         * SHFT  A    S    D    F    G   │  H    J    K    L    ;   SQT
-         *           CTRL  GNUM  SPC    │  ENT  ___  SYS/RALT
-         *
-         * Acceso: toggle desde SYS layer (tecla GAM)
-         * Salir:  LSft(24)+RSft(35) combo simultáneo
-         *         O: hold RALT der → SYS activo → tecla GAM (donde está &tog GAME)
-         * GNUM:   hold pulgar mid-izq → números y F-keys mano izq
-         * Sin HRM — todos los modificadores son físicos y directos
          * ═══════════════════════════════════════════════════ */
 
         game_layer {
@@ -392,18 +365,6 @@
 
         /* ═══════════════════════════════════════════════════
          * L8 — GNUM   Números gaming (Valorant/Minecraft hotbar)
-         *
-         * F1   F2   F3   F4   F5   ___  │  ___  ___  ___  ___  ___  ___
-         *  1    2    3    4    5   ___   │  ___  ___  ___  ___  ___  ___
-         *  6    7    8    9    0   ___   │   B    M    I   TAB  ___  ___
-         *           ___  [GNUM]  ENT    │  ___  ___  ___
-         *
-         * Acceso: hold pulgar mid-izq en GAME layer
-         * Mano izquierda sola maneja todos los números — mano der se queda en mouse
-         * Fila sup: F1-F5 (habilidades Valorant / comandos)
-         * Home row: 1-5 (armas Valorant / hotbar Minecraft 1-5)
-         * Fila inf izq: 6-0 (hotbar Minecraft 6-9, 0)
-         * Fila inf der: B=comprar(Val)/cama(MC) | M=mapa | I=inventario | TAB=scoreboard
          * ═══════════════════════════════════════════════════ */
 
         gamnums_layer {
