@@ -113,6 +113,11 @@
             bindings = <&tog GAME>;
             layers = <GAME>;
         };
+
+        enter {
+            bindings = <&kp ENTER>;
+            key-positions = <15 14>;
+        };
     };
 
     /* ── Comportamientos ──────────────────────────────────── */
@@ -205,8 +210,8 @@
         cole_layer {
             bindings = <
 &tab_bspc BSPC TAB  &kp Q        &kp W        &kp F         &kp P         &kp B              &kp J        &kp L              &kp U         &kp Y        &kp SEMI     &kp DELETE
-&kp ESC             &hml LGUI A  &hml LALT R  &hml LCTRL S  &hml LSHFT T  &kp G              &kp M        &hmr RSHFT N       &hmr RCTRL E  &hmr RALT I  &hmr RGUI O  &kp SQT
-&kp LSHFT           &kp Z        &kp X        &kp C         &kp D         &kp V              &kp K        &kp H              &kp COMMA     &kp DOT      &kp FSLH     &kp RSHFT
+&kp LEFT_SHIFT      &hml LGUI A  &hml LALT R  &hml LCTRL S  &hml LSHFT T  &kp G              &kp M        &hmr RSHFT N       &hmr RCTRL E  &hmr RALT I  &hmr RGUI O  &kp SQT
+&kp ESCAPE          &kp Z        &kp X        &kp C         &kp D         &kp V              &kp K        &kp H              &kp COMMA     &kp DOT      &kp FSLH     &kp RSHFT
                                               &lt NUM LGUI  &lt 2 TAB     &lt_spc 1 SPACE    &lt SYM RET  &lt NAV BACKSPACE  &kp RALT
             >;
         };
