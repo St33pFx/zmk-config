@@ -37,7 +37,7 @@
 #define SYS   6
 #define GAME  7
 #define GNUM  8
-#define GNUM  9
+#define BVIEW   9
 
 
 /*
@@ -414,7 +414,7 @@
 &trans  &trans  &trans  &trans  &trans  &trans    &kp KP_N7  &kp KP_N1  &kp KP_N5  &kp KP_N3  &kp KP_N0  &kp KP_DOT
 &trans  &trans  &trans  &trans  &trans  &trans    &kp Z      &kp LS(S)  &kp O      &trans     &trans     &trans
 &trans  &trans  &trans  &trans  &trans  &trans    &trans     &trans     &trans     &trans     &trans     &trans
-                                &trans  &trans  &trans    &kp SPACE  &trans     &trans
+                                &trans  &trans    &trans     &kp SPACE  &trans     &trans
             >;
         };
     };
