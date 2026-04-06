@@ -337,7 +337,7 @@
             bindings = <
 &kp LC(TAB)  &kp G  &kp R      &kp S      &kp E      &kp I        &kp KP_N7  &kp KP_N1  &kp KP_N5  &kp KP_N3  &kp KP_N0  &kp KP_DOT
 &kp LC(Z)    &kp A  &kp F      &kp M      &kp LC(R)  &kp LC(B)    &kp Z      &kp LS(S)  &kp O      &trans     &trans     &trans
-&kp LC(A)    &kp K  &kp LA(Z)  &kp SLASH  &kp LS(N)  &kp F9       &trans     &trans     &trans     &trans     &trans     &tog 1
+&kp LC(A)    &kp K  &kp LA(Z)  &kp SLASH  &kp LS(N)  &kp F9       &trans     &trans     &trans     &trans     &trans     &tog 4
                                &mo SYS    &kp LS(R)  &kp LA(E)    &kp SPACE  &kp TAB    &mo SYS
             >;
         };
