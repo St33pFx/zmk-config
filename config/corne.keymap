@@ -37,6 +37,8 @@
 #define SYS   6
 #define GAME  7
 #define GNUM  8
+#define GNUM  9
+
 
 /*
  * Posiciones de teclas (Corne 6-col, 42 teclas):
@@ -334,14 +336,13 @@
          * ═══════════════════════════════════════════════════ */
 
       blender_layer {
-            bindings = < 
-&kp LC(TAB)  &kp G  &kp R      &kp S      &kp E      &kp I        &kp KP_N7  &kp KP_N1  &kp KP_N5  &kp KP_N3  &kp KP_N0  &kp KP_DOT
-&kp LSHFT    &kp A  &kp F      &kp M      &kp LC(R)  &kp LC(B)    &kp Z      &kp LS(S)  &kp O      &trans     &trans     &trans
-&kp LC(A)    &kp K  &kp LA(Z)  &kp SLASH  &kp LS(N)  &kp LC(Z)    &trans     &trans     &trans     &trans     &trans     &tog BLEN
-                               &mo NUM    &kp LS(R)  &kp LA(E)    &kp SPACE  &kp TAB    &mo SYS
+            bindings = <
+&kp LC(TAB)  &kp G  &kp R      &kp S      &kp E      &kp I        &trans  &trans  &trans  &trans  &trans  &trans
+&kp LSHFT    &kp A  &kp F      &kp M      &kp LC(R)  &kp LC(B)    &trans  &trans  &trans  &trans  &trans  &trans
+&kp LC(A)    &kp K  &kp LA(Z)  &kp SLASH  &kp LS(N)  &kp LC(Z)    &trans  &trans  &trans  &trans  &trans  &tog BLEN
+                               &mo NUM    &kp LS(R)  &kp LA(E)    &kp SPACE  &mo BVIEW  &mo SYS
             >;
         };
-
         /* ═══════════════════════════════════════════════════
          * L5 — AE   After Effects
          *
@@ -396,6 +397,24 @@
 &kp N1  &kp N2  &kp N3  &kp N4  &kp N5  &trans     &trans  &trans  &trans  &trans   &trans  &trans
 &kp N6  &kp N7  &kp N8  &kp N9  &kp N0  &kp V      &kp B   &kp M   &kp I   &kp TAB  &trans  &trans
                         &trans  &trans  &kp RET    &trans  &trans  &trans
+            >;
+        };
+
+      /* ═══════════════════════════════════════════════════
+         * L9 — BVIEW   Vistas Blender (thumb der mid)
+         *
+         * ___  ___  ___  ___  ___  ___  │  NP7  NP1  NP5  NP3  NP0  NP.
+         * ___  ___  ___  ___  ___  ___  │   Z  Sh+S   O   ___  ___  ___
+         * ___  ___  ___  ___  ___  ___  │  ___  ___  ___  ___  ___  ___
+         *            ___  ___  ___      │  SPC [BVIEW] ___
+         * ═══════════════════════════════════════════════════ */
+
+        bview_layer {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans    &kp KP_N7  &kp KP_N1  &kp KP_N5  &kp KP_N3  &kp KP_N0  &kp KP_DOT
+&trans  &trans  &trans  &trans  &trans  &trans    &kp Z      &kp LS(S)  &kp O      &trans     &trans     &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans     &trans     &trans     &trans     &trans     &trans
+                                &trans  &trans  &trans    &kp SPACE  &trans     &trans
             >;
         };
     };
