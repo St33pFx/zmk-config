@@ -126,6 +126,32 @@
             bindings = <&kp ENTER>;
             key-positions = <15 14>;
         };
+
+        /* G(2) + R(3) → vértices — solo en BLEN */
+        combo_blen_vert {
+            timeout-ms = <50>;
+            key-positions = <2 3>;
+            bindings = <&kp N1>;
+            layers = <BLEN>;
+        };
+
+        /* R(3) + S(4) → edges — solo en BLEN */
+        combo_blen_edge {
+            timeout-ms = <50>;
+            key-positions = <3 4>;
+            bindings = <&kp N2>;
+            layers = <BLEN>;
+        };
+
+        /* S(4) + E(5) → caras — solo en BLEN */
+        combo_blen_face {
+            timeout-ms = <50>;
+            key-positions = <4 5>;
+            bindings = <&kp N3>;
+            layers = <BLEN>;
+        };
+
+
     };
 
     /* ── Comportamientos ──────────────────────────────────── */
