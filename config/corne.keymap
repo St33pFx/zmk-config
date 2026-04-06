@@ -291,31 +291,29 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L4 — BLENDER
+         * L4 — BLENDER   Hard Surface Modeling
          *
-         * C+Tab  G    R    S    E   TAB  │  NP7  NP1  NP5  NP3  NP0  NP.
-         * C+Z    A    H   A+H  C+R   X   │  ___  ___  ___  ___  ___  ___
-         * ___   ___  ___  ___  ___  ___  │  ___  ___  ___  ___  ___  ___
-         *           [SYS]  ___  ___      │  ___  ___  [SYS]
+         * CtTab  G    R    S    E    I   │  NP7  NP1  NP5  NP3  NP0  NP.
+         * CtZ    A    F    M   CtR  CtB  │   Z  Sh+S   O   ___  ___  ___
+         * CtA    K   AlZ   /  Sh+N   F9  │  ___  ___  ___  ___  ___  ___
+         *           [SYS]  Sh+R  Al+E    │  SPC  TAB  [SYS]
          *
-         * Acceso: toggle desde SYS layer (tecla BLEN)
-         * Izquierda: shortcuts modo objeto/edición
-         *   Col0: Ctrl+Tab (pie menu modos), Ctrl+Z (deshacer)
-         *   Col1: G(grab/mover), A(select all)
-         *   Col2: R(rotate), H(hide)
-         *   Col3: S(scale), Alt+H(unhide)
-         *   Col4: E(extrude), Ctrl+R(loop cut)
-         *   Col5: Tab(toggle edit mode), X(delete)
-         * Derecha top: vistas numpad
-         *   NP7=top  NP1=front  NP5=perspectiva  NP3=side  NP0=cámara  NP.=focus
+         * Izq fila sup: pie modos | grab | rotate | scale | extrude | inset
+         * Izq fila med: deshacer | select all | fill | merge | loop cut | bevel
+         * Izq fila inf: apply scale | knife | x-ray | isolate | normales | last op
+         * Der fila sup: vistas numpad
+         * Der fila med: shading pie | snap cursor | proportional edit
+         * Thumbs izq: SYS | Shift+R(repetir) | Alt+E(extrude opts)
+         * Thumbs der: Space(search) | TAB(edit mode) | SYS
+         * Combos (solo BLEN): G+R=vértices | R+S=edges | S+E=caras
          * ═══════════════════════════════════════════════════ */
 
         blender_layer {
-            bindings = <
-&kp LC(TAB)  &kp G   &kp R   &kp S      &kp E      &kp TAB    &kp KP_N7  &kp KP_N1  &kp KP_N5  &kp KP_N3  &kp KP_N0  &kp KP_DOT
-&kp LC(Z)    &kp A   &kp H   &kp LA(H)  &kp LC(R)  &kp X      &trans     &trans     &trans     &trans     &trans     &trans
-&trans       &trans  &trans  &trans     &trans     &trans     &trans     &trans     &trans     &trans     &trans     &trans
-                             &mo SYS    &trans     &trans     &trans     &trans     &mo SYS
+            bindings = 
+&kp LC(TAB)  &kp G   &kp R      &kp S      &kp E       &kp I          &kp KP_N7  &kp KP_N1   &kp KP_N5  &kp KP_N3  &kp KP_N0  &kp KP_DOT
+&kp LC(Z)    &kp A   &kp F      &kp M      &kp LC(R)   &kp LC(B)      &kp Z      &kp LS(S)   &kp O      &trans     &trans     &trans
+&kp LC(A)    &kp K   &kp LA(Z)  &kp SLASH  &kp LS(N)   &kp F9         &trans     &trans      &trans     &trans     &trans     &trans
+                                &mo SYS    &kp LS(R)   &kp LA(E)      &kp SPACE  &kp TAB     &mo SYS
             >;
         };
 
