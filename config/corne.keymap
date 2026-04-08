@@ -286,10 +286,10 @@
 
         blender_layer {
             bindings = <
-&kp X      &kp Y  &kp Z  &kp G        &kp E      &kp I        &kp KP_N7  &kp KP_N1  &kp KP_N9  &kp KP_N3  &kp KP_N0  &kp KP_DOT
-&kp LSHFT  &kp A  &kp R  &kp S        &kp LC(R)  &kp LC(B)    &trans     &kp LS(S)  &trans     &trans     &trans     &kp KP_N5
-&kp LC(A)  &kp K  &kp F  &kp M        &kp DEL    &kp LC(Z)    &kp LA(Z)  &kp LS(N)  &kp LC(A)  &kp LA(E)  &trans     &trans
-                         &kp LC(TAB)  &kp LS(R)  &kp LA(E)    &kp SPACE  &mo BVIEW  &mo NUM
+&kp LS(TAB)  &kp X  &kp Y  &kp G        &kp E      &kp I        &kp KP_N7  &kp KP_N1  &kp KP_N9  &kp KP_N3  &kp KP_N0  &kp KP_DOT
+&kp LSHFT    &kp A  &kp R  &kp S        &kp LC(R)  &kp LC(B)    &trans     &kp LS(S)  &trans     &trans     &trans     &kp KP_N5
+&kp LC(A)    &kp K  &kp F  &kp M        &kp DEL    &kp LC(Z)    &kp LA(Z)  &kp LS(N)  &kp LC(A)  &kp LA(E)  &trans     &trans
+                           &kp LC(TAB)  &kp LS(R)  &kp LA(E)    &kp SPACE  &mo BVIEW  &mo NUM
             >;
         };
 
