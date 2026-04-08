@@ -6,17 +6,18 @@
  * L1  NAV     — Flechas, Home/End/PgUp/PgDn, atajos edición
  * L2  SYM     — Símbolos programación
  * L3  NUM     — Numpad (der) + F-keys (izq)
- * L4  BLENDER — Shortcuts Blender (izq) + viewport numpad (der)
+ * L4  BLEN    — Blender hard surface (momentáneo con &mo)
  * L5  AE      — Shortcuts After Effects
- * L6  SYS     — BT, RGB, System (condicional: NAV+SYM simultáneo)
+ * L6  SYS     — BT, RGB, System
  * L7  GAME    — QWERTY gaming sin HRM
- * L8  GNUM    — Números gaming (Valorant/Minecraft hotbar)
+ * L8  GNUM    — Números gaming
+ * L9  BVIEW   — Vistas Blender + utils (thumb der mid en BLEN)
  *
- * Combos:  W+F → ESC  |  S+T → TAB  |  Shift+Shift → Caps Word  |  Q+P → SYS
- * Thumbs:  NUM/⌘  SPC(puro)  SYM/TAB  ||  SYM/ENT  NAV/DEL  RALT
- * TAB:     tap=TAB  hold=BSPC  (borrar con mano izquierda)
- * SYS:     Q+P combo  O  NAV+SYM simultáneo
- * EXIT GAME: LSft+RSft combo  O  hold RALT → SYS → GAM
+ * Combos:  W+F → ESC  |  S+T → TAB  |  Shift+Shift → CapsWord  |  Q+P → SYS
+ *          G+R → vértices  |  R+S → edges  |  S+E → caras  [solo BLEN]
+ * Thumbs COLE: NUM/GUI  TAB/SYM  SPC/NAV  ||  SYM/ENT  NAV/BSPC  RALT
+ * Thumbs BLEN: Ct+Tab   Sh+R     Al+E     ||  Space     mo BVIEW  mo NUM
+ * BLEN: &mo desde SYS — activo solo mientras se sostiene, COLE al soltar
  */
 
 #include <behaviors.dtsi>
@@ -37,7 +38,7 @@
 #define SYS   6
 #define GAME  7
 #define GNUM  8
-#define BVIEW   9
+#define BVIEW 9
 
 /*
  * Posiciones de teclas (Corne 6-col, 42 teclas):
@@ -55,7 +56,6 @@
 
 /* ── LED chain-length ───────────────────────────────────────── */
 /* 21 per-key (SK6812MINI-E) + 6 underglow (WS2812B) = 27 por lado */
-/* Default de ZMK es 10 — sin esto los per-key nunca encienden     */
 
 &led_strip { chain-length = <27>; };
 
@@ -77,7 +77,6 @@
         compatible = "zmk,combos";
 
         /* W(2) + F(3) → ESC */
-
         combo_esc {
             timeout-ms = <50>;
             key-positions = <2 3>;
@@ -86,7 +85,6 @@
         };
 
         /* S(15) + T(16) → TAB */
-
         combo_tab {
             timeout-ms = <50>;
             key-positions = <15 16>;
@@ -95,7 +93,6 @@
         };
 
         /* LSHFT(24) + RSHFT(35) → Caps Word */
-
         combo_caps_word {
             timeout-ms = <60>;
             key-positions = <24 35>;
@@ -103,8 +100,7 @@
             layers = <COLE>;
         };
 
-        /* Q(1) + P(4) → SYS directo — fácil intencional, difícil accidental */
-
+        /* Q(1) + P(4) → SYS */
         combo_sys {
             timeout-ms = <60>;
             key-positions = <1 4>;
@@ -112,8 +108,7 @@
             layers = <COLE>;
         };
 
-        /* Salir de GAME: LSft(24) + RSft(35) simultáneo */
-
+        /* Salir de GAME */
         combo_exit_game {
             timeout-ms = <60>;
             key-positions = <24 35>;
@@ -121,13 +116,13 @@
             layers = <GAME>;
         };
 
+        /* Enter */
         enter {
             bindings = <&kp ENTER>;
             key-positions = <15 14>;
         };
 
-        /* G(2) + R(3) → vértices — solo en BLEN */
-
+        /* G(2) + R(3) → vértices — solo BLEN */
         combo_blen_vert {
             timeout-ms = <50>;
             key-positions = <2 3>;
@@ -135,8 +130,7 @@
             layers = <BLEN>;
         };
 
-        /* R(3) + S(4) → edges — solo en BLEN */
-
+        /* R(3) + S(4) → edges — solo BLEN */
         combo_blen_edge {
             timeout-ms = <50>;
             key-positions = <3 4>;
@@ -144,8 +138,7 @@
             layers = <BLEN>;
         };
 
-        /* S(4) + E(5) → caras — solo en BLEN */
-
+        /* S(4) + E(5) → caras — solo BLEN */
         combo_blen_face {
             timeout-ms = <50>;
             key-positions = <4 5>;
@@ -157,14 +150,6 @@
     /* ── Comportamientos ──────────────────────────────────── */
 
     behaviors {
-        /*
-         * tab_bspc: tap=TAB  hold=BSPC
-         * Permite borrar con mano izquierda (meñique) sin mover
-         * la mano derecha del mouse.
-         * tap-preferred: al tipear normal nunca activa BSPC accidentalmente.
-         * quick-tap: doble tap rápido = TAB repetido, nunca BSPC.
-         */
-
         tab_bspc: tab_bspc {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -174,12 +159,6 @@
             bindings = <&kp>, <&kp>;
         };
 
-        /*
-         * HRM izquierda — solo se activa como modifier si la
-         * siguiente tecla presionada está en la mano DERECHA o pulgares.
-         * Evita falsos modifiers al tipear rápido (ej: "rst" → no Ctrl).
-         */
-
         hml: hml {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -188,15 +167,9 @@
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&kp>, <&kp>;
-
             hold-trigger-key-positions = <KEYS_R THUMBS>;
             hold-trigger-on-release;
         };
-
-        /*
-         * HRM derecha — solo activa modifier si siguiente tecla
-         * está en mano IZQUIERDA o pulgares.
-         */
 
         hmr: hmr {
             compatible = "zmk,behavior-hold-tap";
@@ -206,7 +179,6 @@
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&kp>, <&kp>;
-
             hold-trigger-key-positions = <KEYS_L THUMBS>;
             hold-trigger-on-release;
         };
@@ -215,7 +187,6 @@
             compatible = "zmk,behavior-hold-tap";
             label = "LT_SPC";
             bindings = <&mo>, <&kp>;
-
             #binding-cells = <2>;
             tapping-term-ms = <200>;
             quick-tap-ms = <200>;
@@ -229,18 +200,11 @@
         /* ═══════════════════════════════════════════════════
          * L0 — COLE   Colemak DH + positional HRM
          *
-         * T/B   Q    W    F    P    B  │  J    L    U    Y   SEMI BSPC
-         * ESC  A⌘   R⌥   S⌃   T⇧   G  │  M   N⇧   E⌃   I⌥  O⌘   SQT
-         * LSft  Z    X    C    D    V  │  K    H    ,    .    /   RSft
-         *         NUM/⌘  SPC  SYM/TAB  │  SYM/ENT  NAV/DEL  ⌥
-         *
-         * T/B = tap TAB / hold BSPC (meñique izq — borrar con 1 mano)
-         * Space = kp puro, sin layer-tap, sin delay
-         * NAV/DEL = tap DEL / hold NAV (thumb mid-der)
-         * HRM mano izq: A=LGUI R=LALT S=LCTRL T=LSHFT
-         * HRM mano der: N=RSHFT E=RCTRL I=RALT O=RGUI
+         * T/B   Q    W    F    P    B  │  J    L    U    Y   SEMI  DEL
+         * SHFT A⌘   R⌥   S⌃   T⇧   G  │  M   N⇧   E⌃   I⌥  O⌘   SQT
+         * ESC   Z    X    C    D    V  │  K    H    ,    .    /   RSHFT
+         *         NUM/⌘  TAB/SYM  SPC/NAV  ||  SYM/ENT  NAV/BSPC  RALT
          * ═══════════════════════════════════════════════════ */
-
         cole_layer {
             bindings = <
 &tab_bspc BSPC TAB  &kp Q        &kp W        &kp F         &kp P         &kp B              &kp J        &kp L              &kp U         &kp Y        &kp SEMI     &kp DELETE
@@ -251,19 +215,13 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L1 — NAV   Navegación + atajos de edición
+         * L1 — NAV
          *
          * ___  ___  ___  PrtSc ___  ___  │ PGUP HOME  ↑   END  DEL  ___
-         * ___   ⌘    ⌥    ⌃    ⇧  C-S   │ PGDN  ←    ↓    →  BSPC ___
+         * ___  GUI  ALT  CTRL SHFT  C-S  │ PGDN  ←    ↓    →  BSPC ___
          * ___  C-Z  C-X  C-C  C-V  C-Y  │  INS  ___  ___  ___  ___  ___
          *            ___  ___  ___       │  ENT [NAV]  ___
-         *
-         * C-S en posición col3 fila inf (donde estaba C) → Ctrl+S mano izq sola
-         * C-X reemplazó C-C porque C-C está en col3 fila sup accesible normal
-         * Modificadores en home row izq para combinar con flechas der
-         * Mantener NAV + SYM → activa SYS (conditional layer)
          * ═══════════════════════════════════════════════════ */
-
         nav_layer {
             bindings = <
 &trans  &trans     &trans     &kp PRINTSCREEN  &trans     &trans       &kp PG_UP  &kp HOME  &kp UP    &kp END    &kp DEL   &trans
@@ -274,17 +232,8 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L2 — SYM   Símbolos para programación
-         *
-         *  `    !    @    #    $    %   │  ^    &    *    (    )   BSPC
-         *  ~    {    }    (    )    |   │  \    -    =    [    ]    ;
-         * ___   <    >    [    ]    /   │  _    +    :    '    "   ___
-         *            ___  [SYS]  ___    │  [SYM]  ___  ___
-         *
-         * Pares de brackets juntos en misma columna para fácil acceso
-         * { } en home row izq | [ ] en fila inf izq | ( ) duplicados
+         * L2 — SYM
          * ═══════════════════════════════════════════════════ */
-
         sym_layer {
             bindings = <
 &kp GRAVE  &kp EXCL  &kp AT    &kp HASH  &kp DLLR  &kp PRCNT    &kp CARET  &kp AMPS   &kp ASTRK  &kp LPAR  &kp RPAR  &kp BSPC
@@ -295,18 +244,8 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L3 — NUM   F-keys izquierda + Numpad derecha
-         *
-         * ___   F1   F2   F3   F4   F5  │   /    7    8    9    -   BSPC
-         * ___   F6   F7   F8   F9  F10  │   *    4    5    6    +    =
-         * ___  F11  F12   ___  ___  ___  │   0    1    2    3    .   ENT
-         *            [NUM]  ___  ___     │  ___  ___  ___
-         *
-         * Acceso: mantener pulgar outer izq (NUM/LGUI)
-         * Numpad layout estándar: 7-8-9 / 4-5-6 / 1-2-3 / 0
-         * KP_SUBTRACT en lugar de KP_MINUS (nombre correcto en ZMK)
+         * L3 — NUM
          * ═══════════════════════════════════════════════════ */
-
         num_layer {
             bindings = <
 &trans  &kp F1   &kp F2   &kp F3  &kp F4  &kp F5     &kp KP_DIVIDE    &kp N7  &kp N8  &kp N9  &kp KP_SUBTRACT  &kp BSPC
@@ -317,41 +256,29 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L4 — BLENDER   Hard Surface Modeling
+         * L4 — BLEN   Hard Surface Modeling
+         * Activo solo mientras se sostiene la tecla en SYS
+         * Al soltar → vuelve automáticamente a COLE
          *
-         * CtTab  G    R    S    E    I   │  NP7  NP1  NP5  NP3  NP0  NP.
-         * CtZ    A    F    M   CtR  CtB  │   Z  Sh+S   O   ___  ___  ___
-         * CtA    K   AlZ   /  Sh+N   F9  │  ___  ___  ___  ___  ___  ___
-         *           [SYS]  Sh+R  Al+E    │  SPC  TAB  [SYS]
-         *
-         * Izq fila sup: pie modos | grab | rotate | scale | extrude | inset
-         * Izq fila med: deshacer | select all | fill | merge | loop cut | bevel
-         * Izq fila inf: apply scale | knife | x-ray | isolate | normales | last op
-         * Der fila sup: vistas numpad
-         * Der fila med: shading pie | snap cursor | proportional edit
-         * Thumbs izq: SYS | Shift+R(repetir) | Alt+E(extrude opts)
-         * Thumbs der: Space(search) | TAB(edit mode) | SYS
-         * Combos (solo BLEN): G+R=vértices | R+S=edges | S+E=caras
+         * Fila sup izq: X(borrar) Y(eje) Z(eje) G(grab) E(extrude) I(inset)
+         * Home row izq: SHFT  A(selAll) R(rot) S(scale) Ct+R(loop) Ct+B(bevel)
+         * Fila inf izq: Ct+A(apply) K(knife) F(fill) M(merge) X→del Ct+Z(undo)
+         * Thumbs izq:   Ct+Tab(modos) Sh+R(repetir) Al+E(extrude opts)
+         * Thumbs der:   Space(search) mo BVIEW(vistas) mo NUM(numpad)
+         * Combos:       G+R=verts | R+S=edges | S+E=faces
          * ═══════════════════════════════════════════════════ */
-
         blender_layer {
             bindings = <
-&kp LC(TAB)  &kp G  &kp R      &kp S      &kp E      &kp I        &trans     &trans     &trans   &trans  &trans  &trans
-&kp LSHFT    &kp A  &kp F      &kp M      &kp LC(R)  &kp LC(B)    &trans     &trans     &trans   &trans  &trans  &kp LS(N)
-&kp LC(A)    &kp K  &kp LA(Z)  &kp SLASH  &kp X      &kp LC(Z)    &trans     &trans     &trans   &trans  &trans  &tog BLEN
-                               &mo NUM    &kp LS(R)  &kp LA(E)    &kp SPACE  &mo BVIEW  &mo SYS
+&kp X        &kp Y   &kp Z      &kp G      &kp E       &kp I          &trans  &trans  &trans  &trans  &trans  &trans
+&kp LSHFT    &kp A   &kp R      &kp S      &kp LC(R)   &kp LC(B)      &trans  &trans  &trans  &trans  &trans  &trans
+&kp LC(A)    &kp K   &kp F      &kp M      &kp DEL     &kp LC(Z)      &trans  &trans  &trans  &trans  &trans  &trans
+                                &kp LC(TAB)  &kp LS(R)  &kp LA(E)    &kp SPACE  &mo BVIEW  &mo NUM
             >;
         };
 
         /* ═══════════════════════════════════════════════════
          * L5 — AE   After Effects
-         *
-         * C+Z    U    P    S    R    T   │  NP0  NP.   [    ]    B    N
-         * C+S    J    K   C+D   `   SPC  │  F9  C+S+D  ___  ___  ___  ___
-         * ___   ___  ___  ___  ___  ___  │  _  C+A+S+H C+A+A ___  ___  ___
-         *           [SYS]  ___  ___      │  ___  ___  [SYS]
          * ═══════════════════════════════════════════════════ */
-
         ae_layer {
             bindings = <
 &kp LC(Z)  &kp U   &kp P   &kp S      &kp R      &kp T        &kp KP_N0  &kp KP_DOT            &kp LBKT       &kp RBKT  &kp B   &kp N
@@ -362,22 +289,21 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L6 — SYS   Sistema (BT, RGB, toggles de capas)
+         * L6 — SYS
+         * BLEN cambiado a &mo — activo solo mientras se sostiene
          * ═══════════════════════════════════════════════════ */
-
         sys_layer {
             bindings = <
 &trans  &sys_reset    &trans        &trans             &trans        &trans          &trans           &trans           &trans           &trans           &trans           &trans
-&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2       &bt BT_SEL 3  &bt BT_SEL 4    &trans           &tog BLEN        &tog AE          &trans           &tog GAME        &trans
+&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2       &bt BT_SEL 3  &bt BT_SEL 4    &trans           &mo BLEN         &tog AE          &trans           &tog GAME        &trans
 &trans  &bt BT_CLR    &out OUT_TOG  &ext_power EP_TOG  &trans        &trans          &rgb_ug RGB_HUI  &rgb_ug RGB_HUD  &rgb_ug RGB_SAI  &rgb_ug RGB_SAD  &rgb_ug RGB_EFF  &rgb_ug RGB_TOG
                                     &trans             &trans        &trans          &trans           &trans           &trans
             >;
         };
 
         /* ═══════════════════════════════════════════════════
-         * L7 — GAME   QWERTY gaming (sin HRM)
+         * L7 — GAME
          * ═══════════════════════════════════════════════════ */
-
         game_layer {
             bindings = <
 &kp ESC    &kp N1  &kp N2  &kp N3     &kp N4    &kp N5       &kp N6   &kp N7  &kp N8        &kp N9  &kp N0    &kp BSPC
@@ -388,9 +314,8 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L8 — GNUM   Números gaming (Valorant/Minecraft hotbar)
+         * L8 — GNUM
          * ═══════════════════════════════════════════════════ */
-
         gamnums_layer {
             bindings = <
 &kp F1  &kp F2  &kp F3  &kp F4  &kp F5  &trans     &trans  &trans  &trans  &trans   &trans  &trans
@@ -401,20 +326,19 @@
         };
 
         /* ═══════════════════════════════════════════════════
-         * L9 — BVIEW   Vistas Blender (thumb der mid)
+         * L9 — BVIEW   Vistas Blender + utils viewport
+         * Activo solo mientras se sostiene thumb der mid en BLEN
          *
-         * ___  ___  ___  ___  ___  ___  │  NP7  NP1  NP5  NP3  NP0  NP.
-         * ___  ___  ___  ___  ___  ___  │   Z  Sh+S   O   ___  ___  ___
-         * ___  ___  ___  ___  ___  ___  │  ___  ___  ___  ___  ___  ___
-         *            ___  ___  ___      │  SPC [BVIEW] ___
+         * Der fila sup: NP7(top) NP1(front) NP5(persp) NP3(side) NP0(cam) NP.(focus)
+         * Der fila med: Z(shading pie) Sh+S(snap cursor) O(proportional) Alt+Z(xray) \ /
+         * Der fila inf: Sh+N(normales) Ct+A(apply scale) Al+E(extrude opts)
          * ═══════════════════════════════════════════════════ */
-
         bview_layer {
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans    &kp KP_N7  &kp KP_N1  &kp KP_N5  &kp KP_N3  &kp KP_N0  &kp KP_DOT
-&trans  &trans  &trans  &trans  &trans  &trans    &kp Z      &kp LS(S)  &kp O      &trans     &trans     &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans     &trans     &trans     &trans     &trans     &trans
-                        &trans  &trans  &trans    &kp SPACE  &trans     &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &kp KP_N7  &kp KP_N1  &kp KP_N5   &kp KP_N3  &kp KP_N0   &kp KP_DOT
+&trans  &trans  &trans  &trans  &trans  &trans    &kp Z      &kp LS(S)  &kp O       &kp LA(Z)  &kp BSLH    &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &kp LS(N)  &kp LC(A)  &kp LA(E)   &trans     &trans      &trans
+                                &trans  &trans  &trans    &kp SPACE  &trans     &trans
             >;
         };
     };
