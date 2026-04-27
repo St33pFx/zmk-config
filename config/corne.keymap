@@ -126,6 +126,7 @@
         enter {
             bindings = <&kp ENTER>;
             key-positions = <15 14>;
+            layers = <0 4>;
         };
 
         /* G(2) + R(3) → vértices — solo BLEN */
