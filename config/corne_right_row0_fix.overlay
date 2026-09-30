@@ -1,0 +1,14 @@
+/*
+ * Right Corne only: move the top row from D4 (P0.22) to D8 (P1.04).
+ * Requires a hardware jumper from the row 0 net to P1.04.
+ * Loaded only by the corne_right entry in build.yaml.
+ */
+
+&kscan0 {
+    row-gpios
+        = <&pro_micro 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        , <&pro_micro 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        , <&pro_micro 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        , <&pro_micro 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        ;
+};

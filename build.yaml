@@ -26,3 +26,4 @@ include:
     
   - board: nice_nano_v2
     shield: corne_right
+    cmake-args: -DEXTRA_DTC_OVERLAY_FILE="${GITHUB_WORKSPACE}/config/corne_right_row0_fix.overlay"
